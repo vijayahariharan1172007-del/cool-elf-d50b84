@@ -11,7 +11,15 @@ const ORDER=[
  ['junior-quiz','03','JUNIOR QUIZ'],['senior-quiz','04','SENIOR QUIZ'],
  ['meme','05','MEME & SLOGAN'],['poster-slogan','06','POSTER']
 ];
-let events=[],current=null,auth=null;
+const FALLBACK=[
+ {key:'symposium-1',serial:'01',title:'SYMPOSIUM 1',description:'Register your verified Master ID for Symposium 1.',fee:100,team:true,requires_abstract:true,enabled:true},
+ {key:'symposium-2',serial:'02',title:'SYMPOSIUM 2',description:'Register your verified Master ID for Symposium 2.',fee:100,team:true,requires_abstract:true,enabled:true},
+ {key:'junior-quiz',serial:'03',title:'JUNIOR QUIZ',description:'Register your verified Master ID for Junior Quiz.',fee:50,team:true,requires_abstract:false,enabled:true},
+ {key:'senior-quiz',serial:'04',title:'SENIOR QUIZ',description:'Register your verified Master ID for Senior Quiz.',fee:50,team:true,requires_abstract:false,enabled:true},
+ {key:'meme',serial:'05',title:'MEME & SLOGAN',description:'Register your verified Master ID for Meme & Slogan.',fee:0,team:false,requires_abstract:true,enabled:true},
+ {key:'poster-slogan',serial:'06',title:'POSTER',description:'Register your verified Master ID for Poster.',fee:0,team:false,requires_abstract:true,enabled:true}
+];
+let events=[...FALLBACK],current=null,auth=null;
 const normalizeId=v=>{let s=String(v??'').normalize('NFKC').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');if(/^EX26\d{6}$/.test(s))s='EX26-'+s.slice(4);return s};
 const formatId=v=>{let s=String(v??'').toUpperCase().replace(/[^A-Z0-9-]/g,'').slice(0,11);if(/^EX26/.test(s)){let n=s.slice(4).replace(/\D/g,'').slice(0,6);return n?'EX26-'+n:'EX26'}return s};
 const phone=v=>String(v??'').replace(/\D/g,'').slice(-10);
@@ -21,20 +29,22 @@ function setFormStatus(msg){$('formStatus').textContent=msg||''}
 function setGateStatus(msg){$('gateStatus').textContent=msg||''}
 
 async function boot(){
- $('loaderStatus').textContent='LOADING EVENT PORTALS';
+ renderEventChoices();
+ showSection('identityGate');
+ $('loaderStatus').textContent='SELECT EVENT TO CONTINUE';
  try{
   const state=await api('public-registration-state');
   const map=new Map((state.events||[]).map(x=>[x.key,x]));
-  events=ORDER.map(([key,serial,title])=>{
+  const live=ORDER.map(([key,serial,title])=>{
    const p=map.get(key);
    return p?{...p,serial:String(p.serial||serial).padStart(2,'0'),displayTitle:title}:null;
   }).filter(Boolean).filter(x=>x.enabled!==false);
-  if(!events.length)throw Error('NO EVENT REGISTRATION PORTALS ARE CURRENTLY AVAILABLE.');
+  if(live.length) events=live;
   renderEventChoices();
-  showSection('identityGate');
   $('loaderStatus').textContent='SELECT EVENT TO CONTINUE';
  }catch(e){
-  $('loaderStatus').textContent=e.message||'Unable to load registration portals.';
+  // Keep the six known portals usable even if the public-state endpoint is temporarily unavailable.
+  $('loaderStatus').textContent='SELECT EVENT TO CONTINUE';
  }
 }
 
