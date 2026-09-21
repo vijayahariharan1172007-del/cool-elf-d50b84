@@ -28,10 +28,31 @@ function showSection(id){['identityGate','portalShell','paymentGate'].forEach(x=
 function setFormStatus(msg){$('formStatus').textContent=msg||''}
 function setGateStatus(msg){$('gateStatus').textContent=msg||''}
 
+async function validateExistingSession(){
+ try{
+  const raw=localStorage.getItem('exc_portal_access');
+  if(!raw)return false;
+  const saved=JSON.parse(raw);
+  if(!saved?.accessToken||Date.now()>=Number(saved.expiresAt||0)){
+   localStorage.removeItem('exc_portal_access');
+   return false;
+  }
+  const r=await api('user-access',{action:'validate_session',accessToken:saved.accessToken});
+  if(!r.sessionValid||!r.master?.masterId)throw Error('SESSION_INVALID');
+  auth={accessToken:saved.accessToken,master:r.master,sessionExpiresAt:Number(r.sessionExpiresAt||saved.expiresAt)};
+  localStorage.setItem('exc_portal_access',JSON.stringify({accessToken:auth.accessToken,master:auth.master,expiresAt:auth.sessionExpiresAt}));
+  return true;
+ }catch(e){
+  localStorage.removeItem('exc_portal_access');
+  return false;
+ }
+}
+
 async function boot(){
  renderEventChoices();
  showSection('identityGate');
  $('loaderStatus').textContent='SELECT EVENT TO CONTINUE';
+ await validateExistingSession();
  try{
   const state=await api('public-registration-state');
   const map=new Map((state.events||[]).map(x=>[x.key,x]));
@@ -67,7 +88,16 @@ function openEvent(key){
  $('portalTitle').textContent=current.displayTitle||current.title;
  $('portalSubtitle').textContent=current.team?'TEAM EVENT • MASTER ID VERIFICATION':'EVENT REGISTRATION • MASTER ID VERIFICATION';
  $('portalDescription').textContent=current.description||'Enter your Master ID and registered mobile number to register for this event.';
- $('masterId').value='';$('registeredEmail').value='';$('mobile').value='';
+ $('masterId').value=auth?.master?.masterId||'';$('registeredEmail').value=auth?.master?.email||'';$('mobile').value=auth?.master?.phone||'';
+ const verified=!!auth?.accessToken&&!!auth?.master?.masterId;
+ document.querySelectorAll('#registrationForm .verify-block').forEach(x=>x.hidden=verified);
+ const notice=$('verifiedSessionNotice');
+ if(notice){
+  notice.hidden=!verified;
+  notice.innerHTML=verified
+   ? '<strong>✓ PARTICIPANT SESSION VERIFIED</strong><span>'+esc(auth.master.name||'Participant')+' • '+esc(auth.master.masterId)+' • '+esc(auth.master.email||'')+'</span>'
+   : '';
+ }
  $('teamFields').hidden=!current.team;
  $('abstractInfo').hidden=current.requires_abstract!==true;
  $('teamList').innerHTML='';
@@ -105,10 +135,19 @@ $('registrationForm').addEventListener('submit',async e=>{
  if(!/^\d{10}$/.test(ph))return setFormStatus('Enter the 10-digit registered mobile number.');
  let team=[];
  try{
-  const identity=await api('user-access',{masterId:id,email,phone:ph});
-  if(!identity.accessToken||!identity.master)throw Error('Unable to verify this Master ID.');
-  auth={accessToken:identity.accessToken,master:identity.master,sessionExpiresAt:Number(identity.sessionExpiresAt||Date.now()+1800000)};
-  localStorage.setItem('exc_portal_access',JSON.stringify({accessToken:auth.accessToken,master:auth.master,expiresAt:auth.sessionExpiresAt}));
+  let identity=null;
+  if(auth?.accessToken){
+   identity=await api('user-access',{action:'validate_session',accessToken:auth.accessToken});
+   if(!identity.sessionValid||!identity.master)throw Error('Your participant session has expired. Please verify your Master ID again.');
+   auth.master=identity.master;
+   auth.sessionExpiresAt=Number(identity.sessionExpiresAt||auth.sessionExpiresAt);
+   localStorage.setItem('exc_portal_access',JSON.stringify({accessToken:auth.accessToken,master:auth.master,expiresAt:auth.sessionExpiresAt}));
+  }else{
+   identity=await api('user-access',{masterId:id,email,phone:ph});
+   if(!identity.accessToken||!identity.master)throw Error('Unable to verify this Master ID.');
+   auth={accessToken:identity.accessToken,master:identity.master,sessionExpiresAt:Number(identity.sessionExpiresAt||Date.now()+1800000)};
+   localStorage.setItem('exc_portal_access',JSON.stringify({accessToken:auth.accessToken,master:auth.master,expiresAt:auth.sessionExpiresAt}));
+  }
   if(current.team){
    const rows=[...document.querySelectorAll('.team-member-row')];
    if(!rows.length)throw Error('ADD AT LEAST ONE TEAM MEMBER.');
