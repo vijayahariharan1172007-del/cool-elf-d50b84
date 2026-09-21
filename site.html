@@ -9,7 +9,54 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Orbitron:wght@500;600;700;800&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="navigation.css">
 <link rel="stylesheet" href="jarvis-hud.css">
-<link rel="stylesheet" href="action-loader.css"><link rel="stylesheet" href="mobile-home.css"></head>
+<link rel="stylesheet" href="action-loader.css"><style>
+  html,body{min-height:100%;background:#020806}
+  .site-bg{
+    position:fixed!important;inset:0!important;
+    background:url("./assets/excelsior-home.webp") center center/cover no-repeat!important;
+    filter:brightness(.72) contrast(1.08) saturate(1.05)!important;
+    transform:none!important;animation:none!important;
+  }
+  .site-bg::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 50% 46%,transparent 18%,rgba(0,8,5,.08) 42%,rgba(0,4,3,.58) 100%);
+  }
+  .excelsior-home{position:relative!important;min-height:calc(100svh - 82px);display:block!important;overflow:hidden!important}
+  .home-title{
+    position:absolute;z-index:12;top:9%;left:50%;transform:translateX(-50%);
+    width:min(92vw,900px);text-align:center;pointer-events:none;
+  }
+  .home-title h1{
+    margin:0;font-family:Cinzel,Georgia,serif;font-weight:800;
+    font-size:clamp(2.2rem,6vw,4.8rem);letter-spacing:.09em;color:#f3ead0;
+    text-shadow:0 2px 4px #000,0 0 22px rgba(83,255,160,.42);
+  }
+  .home-title p{
+    margin:.65rem 0 0;font-family:Orbitron,Montserrat,sans-serif;
+    font-size:clamp(.55rem,1.35vw,.9rem);letter-spacing:.34em;color:#cce9cf;
+    text-shadow:0 1px 3px #000,0 0 12px rgba(83,255,160,.3);
+  }
+  .excelsior-home .enter-zone{
+    position:absolute!important;left:50%!important;top:70%!important;
+    transform:translate(-50%,-50%)!important;width:min(92vw,820px)!important;
+    z-index:13!important;
+  }
+  .excelsior-home .excelsior-access{
+    width:min(88vw,760px)!important;height:112px!important;
+    filter:drop-shadow(0 14px 26px rgba(0,0,0,.85)) drop-shadow(0 0 20px rgba(61,255,119,.35))!important;
+  }
+  .excelsior-home .access-copy strong{font-size:clamp(1.25rem,3.2vw,2rem)!important}
+  .excelsior-home .access-copy small{font-size:clamp(.38rem,1vw,.62rem)!important;letter-spacing:.28em!important}
+  @media(max-width:680px){
+    .excelsior-home{min-height:calc(100svh - 74px)!important}
+    .home-title{top:7%}
+    .home-title h1{font-size:clamp(2rem,10vw,3.25rem);letter-spacing:.06em}
+    .home-title p{font-size:clamp(.42rem,2vw,.62rem);letter-spacing:.22em}
+    .excelsior-home .enter-zone{top:76%!important;width:94vw!important}
+    .excelsior-home .excelsior-access{width:90vw!important;height:88px!important}
+    .excelsior-home .access-copy strong{font-size:clamp(1rem,5vw,1.5rem)!important}
+  }
+</style></head>
 <body>
 <div class="jarvis-loader" id="jarvisLoader" aria-hidden="true">
   <div class="loader-reactor"><span class="loader-ring loader-ring-a"></span><span class="loader-ring loader-ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S. Arc Reactor"><span class="loader-scan"></span></div>
@@ -32,23 +79,12 @@
   <button class="jarvis-orb" id="jarvisButton" type="button" aria-label="Open JARVIS menu"><span class="jarvis-ring ring-a"></span><span class="jarvis-ring ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S." class="jarvis-image"><span class="jarvis-scan"></span><span class="jarvis-label">J.A.R.V.I.S.</span></button>
 </header>
 
-<main class="hero">
-  <div class="mobile-home-scene" aria-hidden="true">
-    <div class="halo"></div>
-    <div class="hood"></div>
-    <div class="robe"></div>
-    <div class="rune left"></div>
-    <div class="rune right"></div>
-    <div class="rock a"></div>
-    <div class="rock b"></div>
-    <div class="rock c"></div>
-    <div class="rock d"></div>
-    <div class="altar"></div>
-  </div>
-  <div class="mobile-home-title">
+<main class="hero excelsior-home">
+  <div class="home-title">
     <h1>EXCELSIOR'26</h1>
     <p>AN INTRACOLLEGIATE EVENT</p>
   </div>
+
   <section class="enter-zone" aria-label="Enter event">
     <div class="energy-orbit orbit-one"></div>
     <div class="energy-orbit orbit-two"></div>
