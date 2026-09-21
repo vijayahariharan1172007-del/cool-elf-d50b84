@@ -151,10 +151,22 @@ $('continueToPortal').addEventListener('click',async()=>{
   else s.textContent='FINALISING EVENT REGISTRATION…';
  },1600);
  try{
-  await api('create-event-registration',{accessToken:auth.accessToken,masterId:auth.master.masterId,name:auth.master.name,phone:auth.master.phone,eventKey:current.key,utr:fee?utr:'',customFields:{},teamMembers:current.team?current.verifiedTeam||[]:[]});
+  const created=await api('create-event-registration',{accessToken:auth.accessToken,masterId:auth.master.masterId,name:auth.master.name,phone:auth.master.phone,eventKey:current.key,utr:fee?utr:'',customFields:{},teamMembers:current.team?current.verifiedTeam||[]:[]});
   clearInterval(timer);
   $('creationStatus').textContent='REGISTRATION CONFIRMED • READY';
   $('successEvent').textContent=current.displayTitle||current.title;
+  const teamIds=[auth.master.masterId,...(current.verifiedTeam||[]).map(m=>m.masterId)].filter(Boolean);
+  const teamBox=$('successTeamMembers'),teamIdsBox=$('successTeamIds'),teamNumber=$('successTeamNumber'),masterLabel=$('successMasterLabel');
+  if(current.team){
+    teamNumber.textContent=created.teamId||'—';
+    teamBox.hidden=false;
+    teamIdsBox.innerHTML=teamIds.map(x=>'<span class="team-id-chip">'+esc(x)+'</span>').join('');
+    masterLabel.textContent='TEAM LEAD MASTER ID';
+  }else{
+    teamNumber.textContent='—';
+    teamBox.hidden=true;
+    masterLabel.textContent='MASTER ID';
+  }
   $('registrationId').textContent=auth.master.masterId||'';
   $('successMessage').textContent=(auth.master.masterId||'Your Master ID')+' has been successfully registered for '+(current.displayTitle||current.title)+'.';
   $('abstractButton').hidden=current.requires_abstract!==true;
