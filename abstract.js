@@ -1,7 +1,7 @@
 (() => {
  const $=id=>document.getElementById(id);
  let auth=null,current=null,currentEventKey='';
- const accessKey='exc_portal_access';
+const downloadCard=(title,rows,filename)=>{const e=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const html='<!doctype html><html><head><meta charset="utf-8"><title>'+e(title)+'</title><style>body{font-family:Arial;background:#eef3ff;padding:30px;color:#14224d}.card{max-width:620px;margin:auto;background:#fff;border:2px solid #173fbe;border-radius:20px;padding:28px}.brand{font-weight:800;letter-spacing:3px;color:#d11d31}.title{font-size:30px;color:#173fbe;font-weight:900;margin:10px 0 22px}.row{border-top:1px solid #e1e6f3;padding:12px 0}.label{font-size:10px;color:#68748f;font-weight:800;text-transform:uppercase}.value{font-size:15px;font-weight:800;margin-top:4px}</style></head><body><div class="card"><div class="brand">EPISTEME // EXCELSIOR\'26</div><div class="title">'+e(title)+'</div>'+rows.map(r=>'<div class="row"><div class="label">'+e(r[0])+'</div><div class="value">'+e(r[1])+'</div></div>').join('')+'</div></body></html>';const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}; const accessKey='exc_portal_access';
  const readSession=()=>{try{return JSON.parse(localStorage.getItem(accessKey)||'null')}catch{return null}};
  const saveSession=(r)=>{
    auth={accessToken:r.accessToken,master:r.master,expiresAt:Number(r.sessionExpiresAt||Date.now()+Number(r.sessionMinutes||30)*60*1000)};
@@ -102,7 +102,7 @@
      if(!up.ok){const detail=await up.text().catch(()=> '');throw Error(detail||'FILE UPLOAD FAILED');}
      await api({action:'submit',accessToken:auth.accessToken,masterId:auth.master.masterId,eventKey,filePath:u.path,fileName:file.name,fileType:file.type||'application/octet-stream',fileSize:file.size});
      if(current)current.submitted=true;
-     $('abstractStatus').textContent='FILE UPLOADED • SUBMISSION RECEIVED • AWAITING REVIEW.';$('submissionFile').value='';$('submissionFileName').textContent='SUBMISSION RECEIVED';
+     $('abstractStatus').textContent='FILE UPLOADED • SUBMISSION RECEIVED • AWAITING REVIEW.';$('submissionFile').value='';$('submissionFileName').textContent='SUBMISSION RECEIVED';$('downloadAbstractCard').hidden=false;$('downloadAbstractCard').onclick=()=>downloadCard('ABSTRACT SUBMISSION CARD',[['Participant',auth.master.name],['Master ID',auth.master.masterId],['Event',current?.eventTitle||currentEventKey],['Submission Status','SUBMISSION RECEIVED • AWAITING REVIEW']],String(currentEventKey||'abstract')+'-abstract-card.html');
    }catch(e){$('abstractStatus').textContent=e.message||'Unable to submit file.';$('submitAbstract').disabled=false;}
  };
  (async()=>{
