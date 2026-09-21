@@ -9,7 +9,7 @@ function showLoader(text='CONNECTING TO J.A.R.V.I.S.'){const l=document.getEleme
 function navigateWithJarvis(url,text){showLoader(text);setTimeout(()=>{location.href=url},350)}
 
 function resizeCanvas(canvas, ctx){
-  const dpr=Math.min(devicePixelRatio||1,2);
+  const dpr=Math.min(devicePixelRatio||1,1.5);
   canvas.width=innerWidth*dpr; canvas.height=innerHeight*dpr;
   canvas.style.width=innerWidth+'px'; canvas.style.height=innerHeight+'px';
   ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -35,10 +35,10 @@ function storm(now){
     lctx.save();lctx.globalAlpha=a*(Math.random()>.16?1:.45);
     drawLine(b.p,8,'rgba(55,255,87,.13)',32);drawLine(b.p,2.2,'rgba(77,255,105,.92)',14);drawLine(b.p,.6,'rgba(230,255,233,.98)',4);lctx.restore();
   });
-  bolts=bolts.filter(b=>b.age<b.life); requestAnimationFrame(storm);
+  bolts=bolts.filter(b=>b.age<b.life); setTimeout(()=>requestAnimationFrame(storm),33);
 }
 function drawLine(points,w,c,blur){lctx.beginPath();lctx.moveTo(points[0].x,points[0].y);for(let i=1;i<points.length;i++)lctx.lineTo(points[i].x,points[i].y);lctx.lineWidth=w;lctx.strokeStyle=c;lctx.shadowColor='#54ff74';lctx.shadowBlur=blur;lctx.stroke()}
-requestAnimationFrame(storm);
+setTimeout(()=>requestAnimationFrame(storm),250);
 
 let particles=[];
 function burst(x,y){
@@ -54,9 +54,9 @@ function burst(x,y){
 function animateEnergy(){
   ectx.clearRect(0,0,innerWidth,innerHeight);
   particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vx*=.975;p.vy*=.975;p.vy+=.035;p.life-=.018;ectx.globalAlpha=Math.max(0,p.life);ectx.beginPath();ectx.arc(p.x,p.y,p.r,0,Math.PI*2);ectx.fillStyle=p.heavy?'#d8ffe0':'#68ff83';ectx.shadowColor='#54ff72';ectx.shadowBlur=p.heavy?18:10;ectx.fill()});
-  particles=particles.filter(p=>p.life>0); requestAnimationFrame(animateEnergy);
+  particles=particles.filter(p=>p.life>0); setTimeout(()=>requestAnimationFrame(animateEnergy),33);
 }
-requestAnimationFrame(animateEnergy);
+setTimeout(()=>requestAnimationFrame(animateEnergy),250);
 
 const enter=document.getElementById('enterButton');
 const jarvis=document.getElementById('jarvisButton');
