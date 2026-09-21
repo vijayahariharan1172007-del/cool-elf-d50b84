@@ -94,14 +94,15 @@
    if(file.size>10*1024*1024)return $('abstractStatus').textContent='FILE MUST BE 10 MB OR SMALLER.';
    $('submitAbstract').disabled=true;$('abstractStatus').textContent='PREPARING SECURE UPLOAD…';
    try{
-     const eventKey=currentEventKey||$('abstractEditor').dataset.eventKey||'';
+     const eventKey=String(currentEventKey||$('abstractEditor').dataset.eventKey||'').trim();
      if(!eventKey)throw Error('No event selected. Please go back and select the event again.');
      const u=await api({action:'upload-url',accessToken:auth.accessToken,masterId:auth.master.masterId,eventKey,fileName:file.name,fileType:file.type||'application/octet-stream',fileSize:file.size});
      $('abstractStatus').textContent='UPLOADING FILE…';
      const up=await fetch(u.signedUrl,{method:'PUT',headers:{'content-type':file.type||'application/octet-stream','x-upsert':'false','cache-control':'3600'},body:file});
      if(!up.ok){const detail=await up.text().catch(()=> '');throw Error(detail||'FILE UPLOAD FAILED');}
      await api({action:'submit',accessToken:auth.accessToken,masterId:auth.master.masterId,eventKey,filePath:u.path,fileName:file.name,fileType:file.type||'application/octet-stream',fileSize:file.size});
-     current.submitted=true;$('abstractStatus').textContent='FILE UPLOADED • SUBMISSION RECEIVED • AWAITING REVIEW.';$('submissionFile').value='';$('submissionFileName').textContent='SUBMISSION RECEIVED';
+     if(current)current.submitted=true;
+     $('abstractStatus').textContent='FILE UPLOADED • SUBMISSION RECEIVED • AWAITING REVIEW.';$('submissionFile').value='';$('submissionFileName').textContent='SUBMISSION RECEIVED';
    }catch(e){$('abstractStatus').textContent=e.message||'Unable to submit file.';$('submitAbstract').disabled=false;}
  };
  (async()=>{
