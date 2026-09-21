@@ -1,71 +1,182 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Registration | EXCELSIOR'26</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Orbitron:wght@500;600;700;800&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="registration.css"><link rel="stylesheet" href="portal-theme.css"><link rel="stylesheet" href="navigation.css"><link rel="stylesheet" href="jarvis-hud.css">
-<style>.participant-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}.participant-grid label,.abstract-fields label{display:flex;flex-direction:column;gap:7px}.participant-grid input,.abstract-fields input[type=file]{width:100%;box-sizing:border-box}.field-help{margin:8px 0 0;color:rgba(255,255,255,.65);font-size:.78rem;line-height:1.5}.abstract-fields{margin-top:18px}.file-drop{border:1px dashed rgba(240,190,100,.45);padding:16px;border-radius:14px;cursor:pointer;background:rgba(255,255,255,.025)}.file-drop span{display:block;margin-top:8px;font-size:.78rem;color:rgba(255,255,255,.65)}@media(max-width:640px){.participant-grid{grid-template-columns:1fr}}</style></head>
-<body class="portal-ref-body">
-<div class="jarvis-loader" id="jarvisLoader" aria-hidden="true"><div class="loader-reactor"><span class="loader-ring loader-ring-a"></span><span class="loader-ring loader-ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S. Arc Reactor"><span class="loader-scan"></span></div><div class="loader-title">J.A.R.V.I.S.</div><div class="loader-status" id="loaderStatus">CONNECTING</div><div class="loader-line"><i></i></div></div>
-<div class="red-atmosphere"></div><canvas id="webCanvas" aria-hidden="true"></canvas><div class="registration-watermark" aria-hidden="true"></div><div class="vignette"></div>
-<button class="jarvis-orb registration-jarvis-orb" id="jarvisBtn" type="button" aria-label="Open JARVIS menu"><span class="jarvis-ring ring-a"></span><span class="jarvis-ring ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S." class="jarvis-image"><span class="jarvis-scan"></span><span class="jarvis-label">J.A.R.V.I.S.</span></button>
-<main class="registration-page">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Event Registration | EXCELSIOR'26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Montserrat:wght@500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="jarvis-hud.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Montserrat,Arial,sans-serif;background:#f5f7fc;color:#15234d}
+body{overflow-x:hidden}
+button,input{font:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+.bg{position:fixed;inset:0;z-index:-3;background:radial-gradient(circle at 50% 8%,rgba(37,111,236,.12),transparent 28%),radial-gradient(circle at 0 75%,rgba(230,34,52,.11),transparent 34%),linear-gradient(180deg,#fff 0%,#f5f7fc 58%,#edf2fb 100%)}
+.bg:after{content:"";position:absolute;inset:0;opacity:.45;background:repeating-linear-gradient(120deg,transparent 0 150px,rgba(35,77,164,.035) 151px 152px)}
+.frame{position:fixed;inset:9px;border:7px solid transparent;border-image:linear-gradient(135deg,#ec233b,transparent 24%,transparent 76%,#ec233b) 1;pointer-events:none;z-index:50}
+.shell{width:min(920px,calc(100% - 28px));margin:0 auto;padding:54px 0 70px}
+.hero{text-align:center;margin:12px 0 28px}
+.hero .eyebrow{margin:0 0 9px;color:#1948bd;font:800 9px/1 Orbitron;letter-spacing:.25em}
+.hero h1{margin:0;color:#12378f;font:900 clamp(2rem,7vw,4rem)/1 Cinzel;letter-spacing:.06em}
+.hero p{margin:10px 0 0;color:#d21e34;font:800 9px/1.5 Orbitron;letter-spacing:.16em}
+.hero-line{width:110px;height:2px;margin:16px auto 0;background:linear-gradient(90deg,transparent,#d51f35,#2768dc,transparent)}
+.statusbar{max-width:720px;margin:0 auto 18px;padding:11px 14px;border:1px solid #c4d0e9;border-radius:12px;background:rgba(255,255,255,.85);color:#5b6883;text-align:center;font:700 9px/1.4 Orbitron;letter-spacing:.06em}
+.statusbar.ok{color:#14834a;border-color:#b8dec8;background:#f4fbf7}
+.statusbar.error{color:#c91d32;border-color:#efbcc4;background:#fff6f7}
+.participant{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;padding:14px 17px;border:1px solid #c1cee9;border-radius:16px;background:rgba(255,255,255,.9);box-shadow:0 10px 28px rgba(25,50,110,.07)}
+.participant small{display:block;color:#16884d;font:800 8px/1 Orbitron;letter-spacing:.12em}
+.participant strong{display:block;margin-top:6px;color:#173f9f;font:800 13px/1.2 Montserrat}
+.participant span{display:block;margin-top:4px;color:#6a7690;font:700 9px/1.2 Orbitron}
+.session-badge{padding:7px 10px;border:1px solid #b8dcc7;border-radius:999px;color:#16884d;background:#f2fbf5;font:800 8px Orbitron;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.event-card{position:relative;width:100%;min-height:156px;padding:22px;text-align:left;border:1px solid #c2cfe8;border-radius:20px;background:rgba(255,255,255,.94);color:#15234d;box-shadow:0 14px 32px rgba(25,50,110,.08);transition:transform .2s,box-shadow .2s,border-color .2s}
+.event-card:hover{transform:translateY(-3px);border-color:#6e94df;box-shadow:0 18px 38px rgba(25,70,150,.14)}
+.event-number{color:#8a96ae;font:800 9px Orbitron;letter-spacing:.14em}
+.event-title{display:block;margin:15px 0 9px;color:#173f9f;font:900 18px/1.18 Cinzel;letter-spacing:.03em}
+.event-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;color:#68758f;font:700 8px/1.4 Orbitron;letter-spacing:.05em}
+.event-fee{position:absolute;right:18px;top:18px;color:#d21e34;font:900 11px Orbitron}
+.arrow{position:absolute;right:19px;bottom:17px;color:#1d59c6;font-size:20px}
+.step{max-width:720px;margin:0 auto}
+.back{border:1px solid #c0cde7;background:#fff;color:#1d4cae;border-radius:9px;padding:10px 13px;font:800 8px Orbitron;letter-spacing:.05em}
+.card{margin-top:15px;padding:23px;border:1px solid #bfcee9;border-radius:22px;background:rgba(255,255,255,.94);box-shadow:0 18px 44px rgba(25,50,110,.1)}
+.stephead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:20px}
+.stepno{color:#d21e34;font:900 9px Orbitron;letter-spacing:.16em}
+.stephead h2{margin:7px 0 4px;color:#173f9f;font:900 clamp(1.45rem,5vw,2.2rem)/1 Cinzel}
+.stephead p{margin:0;color:#6a7690;font:600 10px/1.5 Montserrat}
+.price{color:#d21e34;font:900 12px Orbitron;white-space:nowrap}
+.section{margin-top:18px;padding-top:17px;border-top:1px solid #d9e0ef}
+.section h3{margin:0 0 12px;color:#28457f;font:900 10px Orbitron;letter-spacing:.08em}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+label{display:block;color:#405783;font:800 8px/1.3 Orbitron;letter-spacing:.06em}
+input{width:100%;margin-top:7px;padding:13px 12px;border:1px solid #bac9e5;border-radius:10px;background:#fff;color:#17264f;outline:none;font:700 12px Montserrat}
+input:focus{border-color:#3970dc;box-shadow:0 0 0 3px rgba(57,112,220,.11)}
+.readonly{background:#f4f7fd}
+.help{margin:9px 0 0;color:#77839a;font:600 9px/1.5 Montserrat}
+.team-list{display:grid;gap:10px}
+.team-row{padding:13px;border:1px solid #d0d9ea;border-radius:13px;background:#f8faff}
+.team-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;color:#254a9e;font:800 8px Orbitron}
+.remove{border:0;background:none;color:#cc2135;font:800 8px Orbitron}
+.add{margin-top:10px;border:1px dashed #9eb3dd;background:#f6f9ff;color:#2453a9;border-radius:9px;padding:10px 12px;font:800 8px Orbitron}
+.abstract-note{padding:12px 13px;border:1px solid #ccd7eb;border-radius:11px;background:#f5f8ff;color:#5c6a85;font:600 9px/1.55 Montserrat}
+.actions{display:flex;gap:10px;margin-top:20px}
+.primary,.secondary{flex:1;border-radius:10px;padding:13px 14px;font:900 9px Orbitron;letter-spacing:.04em}
+.primary{border:0;background:linear-gradient(135deg,#1038bd,#126be5);color:#fff;box-shadow:0 10px 22px rgba(18,63,213,.2)}
+.secondary{border:1px solid #bdcbe5;background:#fff;color:#234b9e}
+button:disabled{opacity:.55;cursor:wait}
+.message{min-height:18px;margin:11px 0 0;text-align:center;color:#c51f34;font:700 9px/1.5 Montserrat}
+.payment-card{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:center}
+.qrbox{min-height:220px;display:grid;place-items:center;padding:14px;border:1px solid #c0cee8;border-radius:16px;background:#fff}
+.qrbox img{display:block;max-width:190px;max-height:190px;object-fit:contain}
+.qr-missing{color:#c51f34;font:800 9px Orbitron;text-align:center}
+.amount-label{color:#758198;font:800 8px Orbitron;letter-spacing:.08em}
+.amount{margin:7px 0 12px;color:#173f9f;font:900 28px Orbitron}
+.payment-note{color:#61708d;font:600 10px/1.6 Montserrat}
+.success-wrap{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(9,22,53,.45);backdrop-filter:blur(10px)}
+.success{width:min(520px,100%);padding:26px;border:1px solid #b8c9e7;border-radius:24px;background:#fff;box-shadow:0 30px 80px rgba(15,35,90,.25);text-align:center}
+.check{width:52px;height:52px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;background:#edf9f1;color:#16884d;font:900 25px Arial}
+.success small{color:#16884d;font:800 8px Orbitron;letter-spacing:.13em}
+.success h2{margin:9px 0 17px;color:#173f9f;font:900 22px Cinzel}
+.pass{padding:16px;text-align:left;border:1px solid #c4d1e9;border-radius:15px;background:linear-gradient(135deg,#f9fbff,#eef4ff)}
+.pass-top,.pass-bottom{display:flex;justify-content:space-between;gap:10px;font:800 7px Orbitron;color:#64718c;letter-spacing:.06em}
+.pass-top strong{color:#d21e34}.pass-main{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 0}.pass-main b{display:block;color:#173f9f;font:900 15px Montserrat}.pass-main span{display:block;margin-top:5px;color:#62708b;font:700 8px Orbitron}.pass-main #qrcode{background:#fff;padding:5px}.success-note{display:block;margin:13px 0;color:#63718b;font:600 9px/1.5 Montserrat}
+.success-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.success-actions button{border:0;border-radius:9px;padding:12px;background:#1748bd;color:#fff;font:800 8px Orbitron}.success-actions button:last-child{grid-column:1/-1;background:#eef3fc;color:#244b99}
+.jarvis-mini{position:fixed;right:20px;top:17px;z-index:80;width:78px;height:78px;border:0;border-radius:50%;padding:0;background:rgba(4,13,24,.75);box-shadow:0 0 24px rgba(69,220,255,.35);overflow:visible}
+.jarvis-mini img{width:68px;height:68px;border-radius:50%;object-fit:cover}.jarvis-mini span{position:absolute;left:50%;transform:translateX(-50%);top:82px;color:#167b9a;font:800 6px Orbitron;white-space:nowrap}
+@media(max-width:700px){.shell{width:min(100% - 20px,620px);padding-top:82px}.grid,.fields{grid-template-columns:1fr}.participant{align-items:flex-start}.session-badge{display:none}.payment-card{grid-template-columns:1fr}.qrbox{min-height:190px}.actions{flex-direction:column}.success-actions{grid-template-columns:1fr}.success-actions button:last-child{grid-column:auto}.jarvis-mini{right:12px;top:10px;transform:scale(.82);transform-origin:top right}}
+</style>
+</head>
+<body>
+<div class="bg"></div><div class="frame"></div>
 
+<div class="jarvis-loader" id="jarvisLoader" aria-hidden="true">
+  <div class="loader-reactor"><span class="loader-ring loader-ring-a"></span><span class="loader-ring loader-ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S."><span class="loader-scan"></span></div>
+  <div class="loader-title">J.A.R.V.I.S.</div><div class="loader-status" id="loaderStatus">CONNECTING</div><div class="loader-line"><i></i></div>
+</div>
 
-<section class="portal-directory" id="portalDirectory" hidden>
- <div class="reg-heading"><p>EXCELSIOR'26</p><h2>EVENT PORTALS</h2><span>SELECT ONE EVENT TO CONTINUE</span></div>
- <div class="verified-participant" id="verifiedParticipant"></div>
- <div class="portal-access-status" id="portalAccessStatus">CHOOSE YOUR EVENT REGISTRATION PORTAL</div>
- <div class="registration-types" id="registrationTypes"></div>
-</section>
+<button class="jarvis-mini" id="jarvisBtn" type="button" aria-label="Open JARVIS navigation"><img src="jarvis.webp" alt="J.A.R.V.I.S."><span>J.A.R.V.I.S.</span></button>
 
-<section class="identity-gate" id="identityGate" hidden>
- <button class="portal-back" id="backToTypes" type="button">← EVENTS</button>
- <div class="portal-heading"><p id="identitySerial">01</p><h2 id="identityTitle">EVENT</h2><span id="identitySubtitle">EVENT REGISTRATION</span></div>
- <div class="gate-card access-panel">
-  <div class="selected-entry" id="identityEvent"></div>
-  <div class="verified-main" id="verifiedMain"></div>
-  <div class="participant-fields" id="participantFields">
-   <div class="section-title"><span>01</span> PARTICIPANT DETAILS</div>
-   <div class="participant-grid">
-    <label>MASTER ID<input id="mainMasterId" type="text" placeholder="EX26-000000" maxlength="11" autocomplete="off"></label>
-    <label>REGISTERED MOBILE<input id="mainMobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" autocomplete="tel"></label>
-   </div>
-   <p class="field-help">Re-enter the Master ID and registered mobile number used during pre-registration.</p>
-  </div>
-  <div id="teamFields" class="team-fields" hidden>
-   <div class="section-title"><span>1A</span> TEAM MEMBERS</div>
-   <p class="team-help">For team events, add every team member here. Enter each member's Master ID and registered mobile number.</p>
-   <div id="teamMemberRows"></div>
-   <button class="verify-btn" id="addTeamMember" type="button">+ ADD TEAM MEMBER</button>
-  </div>
-  <div id="abstractFields" class="abstract-fields" hidden>
-   <div class="section-title"><span>02</span> ABSTRACT / SUBMISSION</div>
-   <p class="team-help">This event requires a submission. Upload the abstract/work file now. Accepted formats: PDF, DOC or DOCX, up to 10 MB.</p>
-   <label class="file-drop">UPLOAD ABSTRACT / SUBMISSION<input id="abstractFile" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><span id="abstractFileName">NO FILE SELECTED</span></label>
-  </div>
-  <button class="continue-btn" id="continueToPay" type="button">CONTINUE <b>→</b></button>
-  <p class="gate-status" id="identityStatus" role="status"></p>
- </div>
-</section>
+<main class="shell">
+  <section id="loadingView">
+    <div class="hero"><p class="eyebrow">EXCELSIOR'26</p><h1>EVENT REGISTRATION</h1><p>SECURE PARTICIPANT ACCESS</p><div class="hero-line"></div></div>
+    <div class="statusbar" id="loadingStatus">CONNECTING TO REGISTRATION SYSTEM…</div>
+  </section>
 
-<section class="payment-gate" id="paymentGate" hidden>
- <button class="portal-back" id="backToIdentity" type="button">← VERIFICATION</button>
- <div class="portal-heading"><p id="gateSerial">01</p><h2 id="gateTitle">PAYMENT</h2><span>SCAN • PAY • ENTER UTR</span></div>
- <div class="gate-card">
-  <div class="gate-meta"><span>EVENT</span><b id="gateType">—</b></div>
-  <div class="gate-payment"><div class="gate-copy"><small>AMOUNT TO PAY</small><strong id="gateAmount">₹0</strong><span id="gateNote">Complete the payment before confirming registration.</span></div><div class="gate-qr" id="gateQr"></div></div>
-  <label>TRANSACTION / UTR NUMBER<input id="gateUtr" type="text" placeholder="Enter UTR / transaction reference" autocomplete="off"></label>
-  <button class="continue-btn" id="confirmRegistration" type="button">CONFIRM REGISTRATION <b>→</b></button>
-  <p class="gate-status" id="gateStatus" role="status"></p>
- </div>
-</section>
+  <section id="eventsView" hidden>
+    <div class="hero"><p class="eyebrow">EXCELSIOR'26</p><h1>CHOOSE YOUR EVENT</h1><p>SELECT ONE PORTAL TO CONTINUE</p><div class="hero-line"></div></div>
+    <div class="participant" id="participantBox"></div>
+    <div class="grid" id="eventGrid"></div>
+  </section>
+
+  <section class="step" id="detailsView" hidden>
+    <button class="back" id="backEvents" type="button">← BACK TO EVENTS</button>
+    <div class="card">
+      <div class="stephead"><div><div class="stepno">STEP 01 • PARTICIPANT DETAILS</div><h2 id="detailsTitle">EVENT</h2><p id="detailsSubtitle">VERIFY YOUR DETAILS BEFORE CONTINUING.</p></div><div class="price" id="detailsFee">FREE</div></div>
+      <div class="section">
+        <h3>MAIN PARTICIPANT</h3>
+        <div class="fields">
+          <label>MASTER ID<input id="mainMasterId" placeholder="EX26-000000" maxlength="11" autocomplete="off"></label>
+          <label>REGISTERED MOBILE<input id="mainMobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile"></label>
+        </div>
+        <p class="help">Re-enter the Master ID and registered mobile number used during verification.</p>
+      </div>
+      <div class="section" id="teamSection" hidden>
+        <h3>TEAM MEMBERS</h3>
+        <p class="help">Add every additional member. Each member must have their own Master ID and registered mobile number.</p>
+        <div class="team-list" id="teamList"></div>
+        <button class="add" id="addMember" type="button">+ ADD TEAM MEMBER</button>
+      </div>
+      <div class="section" id="abstractSection" hidden>
+        <h3>SUBMISSION REQUIREMENT</h3>
+        <div class="abstract-note">This event requires an abstract/submission. Complete the event registration first, then use the <b>Abstract Submission</b> portal to upload the file.</div>
+      </div>
+      <div class="actions"><button class="secondary" id="cancelDetails" type="button">CANCEL</button><button class="primary" id="continueDetails" type="button">CONTINUE TO PAYMENT →</button></div>
+      <p class="message" id="detailsMessage"></p>
+    </div>
+  </section>
+
+  <section class="step" id="paymentView" hidden>
+    <button class="back" id="backDetails" type="button">← BACK TO DETAILS</button>
+    <div class="card">
+      <div class="stephead"><div><div class="stepno">STEP 02 • PAYMENT</div><h2 id="paymentTitle">PAYMENT</h2><p>Complete payment, then enter the transaction reference.</p></div><div class="price" id="paymentFee">₹0</div></div>
+      <div class="payment-card">
+        <div class="qrbox" id="qrBox"></div>
+        <div>
+          <div class="amount-label">AMOUNT TO PAY</div><div class="amount" id="paymentAmount">₹0</div>
+          <div class="payment-note" id="paymentNote"></div>
+          <label style="margin-top:18px">UTR / TRANSACTION REFERENCE<input id="utr" maxlength="40" placeholder="Enter UTR / transaction reference" autocomplete="off"></label>
+        </div>
+      </div>
+      <div class="actions"><button class="secondary" id="cancelPayment" type="button">← DETAILS</button><button class="primary" id="confirm" type="button">CONFIRM REGISTRATION →</button></div>
+      <p class="message" id="paymentMessage"></p>
+    </div>
+  </section>
 </main>
 
-<div class="success-overlay" id="successOverlay" hidden><div class="success-card"><div class="success-symbol">✓</div><p>REGISTRATION SUCCESSFUL</p><h2 id="registrationId">SUBMITTED</h2><div class="pass-card" id="passCard"><div class="pass-top"><strong>EXCELSIOR'26</strong><span>ENTRY REGISTRATION</span></div><div class="pass-main"><div><b id="passName">NAME</b><span id="passEvent">EVENT</span><span id="passMobile">+91 XXXXX XXXXX</span></div><div id="qrcode" aria-label="Registration QR code"></div></div><div class="pass-bottom"><span>EPISTEME</span><span id="passId">EX26-000000</span></div></div><span class="success-note" id="successNote">REGISTRATION SUCCESSFUL • DETAILS SAVED.</span><div class="success-actions"><button id="abstractButton" hidden>ABSTRACT SUBMISSION</button><button id="printPass">SAVE / PRINT PASS</button><button id="closeSuccess">RETURN TO EVENTS</button></div></div></div>
+<div class="success-wrap" id="successView" hidden>
+  <div class="success">
+    <div class="check">✓</div><small>REGISTRATION CONFIRMED</small><h2 id="successEvent">EVENT</h2>
+    <div class="pass"><div class="pass-top"><strong>EXCELSIOR'26</strong><span>ENTRY REGISTRATION</span></div><div class="pass-main"><div><b id="passName">PARTICIPANT</b><span id="passId">EX26-000000</span><span id="passMobile">0000000000</span><span id="registrationId">REGISTRATION ID</span></div><div id="qrcode"></div></div><div class="pass-bottom"><span>EPISTEME</span><span>EXCELSIOR'26</span></div></div>
+    <span class="success-note" id="successNote">REGISTRATION SUCCESSFUL.</span>
+    <div class="success-actions"><button id="abstractButton" hidden>ABSTRACT SUBMISSION</button><button id="printPass">SAVE / PRINT PASS</button><button id="returnEvents">RETURN TO EVENTS</button></div>
+  </div>
+</div>
 
-<div class="jarvis-panel" id="jarvisPanel" aria-hidden="true"><div class="jarvis-hud" role="dialog" aria-label="J.A.R.V.I.S. command interface"><header class="jarvis-hud-header"><div class="jarvis-brand"><strong>J A R V I S</strong><span>YOUR EVENT ASSISTANT</span><i class="jarvis-header-line"></i></div><div class="jarvis-header-meta"><b>NAVIGATE</b> &nbsp;•&nbsp; EXPLORE &nbsp;•&nbsp; ACHIEVE</div></header><button class="jarvis-close" id="jarvisClose" type="button">CLOSE INTERFACE</button><section class="jarvis-core-zone" aria-label="JARVIS core"><div class="jarvis-core"><span class="core-ring a"></span><span class="core-ring b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S."><span class="core-scan"></span></div><div class="jarvis-core-label"><strong>J.A.R.V.I.S.</strong><span>COMMAND CORE // ONLINE</span></div></section><nav class="jarvis-links" aria-label="JARVIS navigation"><button type="button" data-target="HOME"><span class="jarvis-link-icon">⌂</span><span class="jarvis-link-copy">HOME<small>RETURN TO COMMAND DECK</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="REGISTRATIONS"><span class="jarvis-link-icon">▣</span><span class="jarvis-link-copy">REGISTRATION<small>ACCESS EVENT REGISTRATION</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="PROFILE"><span class="jarvis-link-icon">●</span><span class="jarvis-link-copy">PROFILE<small>PARTICIPANT COMMAND PROFILE</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="GENERAL RULES"><span class="jarvis-link-icon">≡</span><span class="jarvis-link-copy">RULES<small>EVENT PROTOCOLS &amp; GUIDELINES</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="CONTACTS"><span class="jarvis-link-icon">◉</span><span class="jarvis-link-copy">CONTACT US<small>CONNECT WITH EXCELSIOR COMMAND</small></span><i class="jarvis-link-arrow"></i></button></nav><div class="jarvis-status"><i></i>CORE ONLINE &nbsp;•&nbsp; SECURE LINK &nbsp;•&nbsp; READY</div></div></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script src="registration-portals.js?v=23"></script><script src="content.js"></script><script src="page-loader.js"></script><script src="site-text.js"></script><script src="public-visual-overrides.js"></script>
-</body></html>
+<div class="jarvis-panel" id="jarvisPanel" aria-hidden="true">
+  <div class="jarvis-hud" role="dialog" aria-label="J.A.R.V.I.S. navigation">
+    <header class="jarvis-hud-header"><div class="jarvis-brand"><strong>J A R V I S</strong><span>YOUR EVENT ASSISTANT</span><i class="jarvis-header-line"></i></div><div class="jarvis-header-meta"><b>NAVIGATE</b> • EXPLORE • ACHIEVE</div></header>
+    <button class="jarvis-close" id="jarvisClose" type="button">CLOSE INTERFACE</button>
+    <section class="jarvis-core-zone"><div class="jarvis-core"><span class="core-ring a"></span><span class="core-ring b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S."><span class="core-scan"></span></div><div class="jarvis-core-label"><strong>J.A.R.V.I.S.</strong><span>COMMAND CORE // ONLINE</span></div></section>
+    <nav class="jarvis-links"><button data-target="HOME" type="button"><span class="jarvis-link-icon">⌂</span><span class="jarvis-link-copy">HOME<small>RETURN TO COMMAND DECK</small></span><i class="jarvis-link-arrow"></i></button><button data-target="REGISTRATIONS" type="button"><span class="jarvis-link-icon">▣</span><span class="jarvis-link-copy">REGISTRATION<small>ACCESS EVENT REGISTRATION</small></span><i class="jarvis-link-arrow"></i></button><button data-target="PROFILE" type="button"><span class="jarvis-link-icon">●</span><span class="jarvis-link-copy">PROFILE<small>PARTICIPANT COMMAND PROFILE</small></span><i class="jarvis-link-arrow"></i></button><button data-target="GENERAL RULES" type="button"><span class="jarvis-link-icon">≡</span><span class="jarvis-link-copy">RULES<small>EVENT PROTOCOLS &amp; GUIDELINES</small></span><i class="jarvis-link-arrow"></i></button><button data-target="CONTACTS" type="button"><span class="jarvis-link-icon">◉</span><span class="jarvis-link-copy">CONTACT US<small>CONNECT WITH EXCELSIOR COMMAND</small></span><i class="jarvis-link-arrow"></i></button></nav>
+    <div class="jarvis-status"><i></i>CORE ONLINE • SECURE LINK • READY</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="registration-portals.js?v=24"></script>
+<script src="page-loader.js"></script>
+</body>
+</html>
