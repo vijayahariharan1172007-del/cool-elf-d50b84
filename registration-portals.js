@@ -156,7 +156,7 @@ $('continueToPortal').addEventListener('click',async()=>{
   $('creationStatus').textContent='REGISTRATION CONFIRMED • READY';
   $('successEvent').textContent=current.displayTitle||current.title;
   const teamIds=[auth.master.masterId,...(current.verifiedTeam||[]).map(m=>m.masterId)].filter(Boolean);
-  const teamBox=$('successTeamMembers'),teamIdsBox=$('successTeamIds'),teamNumber=$('successTeamNumber'),masterLabel=$('successMasterLabel');
+  const teamBox=$('successTeamMembers'),teamIdsBox=$('successTeamIds'),masterLabel=$('successMasterLabel');
   if(current.team){
     teamNumber.textContent=created.teamId||'—';
     teamBox.hidden=false;
