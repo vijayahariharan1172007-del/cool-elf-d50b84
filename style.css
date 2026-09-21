@@ -781,3 +781,6 @@ body{background:#000!important}
   .command-node small{font-size:4px!important;margin-top:5px!important}
   .portal-command-status{display:none!important}
 }
+
+/* Home layout prepared for the replacement background image. Add the supplied image at assets/home-background.png later. */
+.site-bg{background-image:url('assets/home-background.png');background-size:cover;background-position:center;background-repeat:no-repeat}.hero{min-height:calc(100svh - 86px);display:grid;place-items:center}.enter-zone{width:100%;display:grid;place-items:center}.enter-zone .energy-orbit,.enter-zone .ground-core{display:none}.excelsior-access{margin:0}
