@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Registration | EXCELSIOR'26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Orbitron:wght@500;600;700;800&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="registration.css"><link rel="stylesheet" href="portal-theme.css"><link rel="stylesheet" href="navigation.css"><link rel="stylesheet" href="jarvis-hud.css">
+</head>
+<body class="portal-ref-body">
+<div class="jarvis-loader" id="jarvisLoader" aria-hidden="true"><div class="loader-reactor"><span class="loader-ring loader-ring-a"></span><span class="loader-ring loader-ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S. Arc Reactor"><span class="loader-scan"></span></div><div class="loader-title">J.A.R.V.I.S.</div><div class="loader-status" id="loaderStatus">CONNECTING</div><div class="loader-line"><i></i></div></div>
+<div class="red-atmosphere"></div><canvas id="webCanvas" aria-hidden="true"></canvas><div class="registration-watermark" aria-hidden="true"></div><div class="vignette"></div>
+<button class="jarvis-orb registration-jarvis-orb" id="jarvisBtn" type="button" aria-label="Open JARVIS menu"><span class="jarvis-ring ring-a"></span><span class="jarvis-ring ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S." class="jarvis-image"><span class="jarvis-scan"></span><span class="jarvis-label">J.A.R.V.I.S.</span></button>
+<main class="registration-page">
+
+
+<section class="portal-directory" id="portalDirectory" hidden>
+ <div class="reg-heading"><p>EXCELSIOR'26</p><h2>EVENT PORTALS</h2><span>SELECT ONE EVENT TO CONTINUE</span></div>
+ <div class="verified-participant" id="verifiedParticipant"></div>
+ <div class="portal-access-status" id="portalAccessStatus">CHOOSE YOUR EVENT REGISTRATION PORTAL</div>
+ <div class="registration-types" id="registrationTypes"></div>
+</section>
+
+<section class="identity-gate" id="identityGate" hidden>
+ <button class="portal-back" id="backToTypes" type="button">← EVENTS</button>
+ <div class="portal-heading"><p id="identitySerial">01</p><h2 id="identityTitle">EVENT</h2><span id="identitySubtitle">EVENT REGISTRATION</span></div>
+ <div class="gate-card access-panel">
+  <div class="selected-entry" id="identityEvent"></div>
+  <div class="verified-main" id="verifiedMain"></div>
+  <div id="teamFields" class="team-fields" hidden>
+   <div class="section-title"><span>1A</span> TEAM MEMBERS</div>
+   <p class="team-help">For team events, add every team member here before continuing to payment. Enter each member's Master ID and registered mobile number. All members will be verified and their details will be saved with this registration.</p>
+   <div id="teamMemberRows"></div>
+   <button class="verify-btn" id="addTeamMember" type="button">+ ADD TEAM MEMBER</button>
+  </div>
+  <button class="continue-btn" id="continueToPay" type="button">CONTINUE TO PAY <b>→</b></button>
+  <p class="gate-status" id="identityStatus" role="status"></p>
+ </div>
+</section>
+
+<section class="payment-gate" id="paymentGate" hidden>
+ <button class="portal-back" id="backToIdentity" type="button">← VERIFICATION</button>
+ <div class="portal-heading"><p id="gateSerial">01</p><h2 id="gateTitle">PAYMENT</h2><span>SCAN • PAY • ENTER UTR</span></div>
+ <div class="gate-card">
+  <div class="gate-meta"><span>EVENT</span><b id="gateType">—</b></div>
+  <div class="gate-payment"><div class="gate-copy"><small>AMOUNT TO PAY</small><strong id="gateAmount">₹0</strong><span id="gateNote">Complete the payment before confirming registration.</span></div><div class="gate-qr" id="gateQr"></div></div>
+  <label>TRANSACTION / UTR NUMBER<input id="gateUtr" type="text" placeholder="Enter UTR / transaction reference" autocomplete="off"></label>
+  <button class="continue-btn" id="confirmRegistration" type="button">CONFIRM REGISTRATION <b>→</b></button>
+  <p class="gate-status" id="gateStatus" role="status"></p>
+ </div>
+</section>
+</main>
+
+<div class="success-overlay" id="successOverlay" hidden><div class="success-card"><div class="success-symbol">✓</div><p>REGISTRATION SUCCESSFUL</p><h2 id="registrationId">SUBMITTED</h2><div class="pass-card" id="passCard"><div class="pass-top"><strong>EXCELSIOR'26</strong><span>ENTRY REGISTRATION</span></div><div class="pass-main"><div><b id="passName">NAME</b><span id="passEvent">EVENT</span><span id="passMobile">+91 XXXXX XXXXX</span></div><div id="qrcode" aria-label="Registration QR code"></div></div><div class="pass-bottom"><span>EPISTEME</span><span id="passId">EX26-000000</span></div></div><span class="success-note" id="successNote">REGISTRATION SUCCESSFUL • DETAILS SAVED.</span><div class="success-actions"><button id="abstractButton" hidden>ABSTRACT SUBMISSION</button><button id="printPass">SAVE / PRINT PASS</button><button id="closeSuccess">RETURN TO EVENTS</button></div></div></div>
+
+<div class="jarvis-panel" id="jarvisPanel" aria-hidden="true"><div class="jarvis-hud" role="dialog" aria-label="J.A.R.V.I.S. command interface"><header class="jarvis-hud-header"><div class="jarvis-brand"><strong>J A R V I S</strong><span>YOUR EVENT ASSISTANT</span><i class="jarvis-header-line"></i></div><div class="jarvis-header-meta"><b>NAVIGATE</b> &nbsp;•&nbsp; EXPLORE &nbsp;•&nbsp; ACHIEVE</div></header><button class="jarvis-close" id="jarvisClose" type="button">CLOSE INTERFACE</button><section class="jarvis-core-zone" aria-label="JARVIS core"><div class="jarvis-core"><span class="core-ring a"></span><span class="core-ring b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S."><span class="core-scan"></span></div><div class="jarvis-core-label"><strong>J.A.R.V.I.S.</strong><span>COMMAND CORE // ONLINE</span></div></section><nav class="jarvis-links" aria-label="JARVIS navigation"><button type="button" data-target="HOME"><span class="jarvis-link-icon">⌂</span><span class="jarvis-link-copy">HOME<small>RETURN TO COMMAND DECK</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="REGISTRATIONS"><span class="jarvis-link-icon">▣</span><span class="jarvis-link-copy">REGISTRATION<small>ACCESS EVENT REGISTRATION</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="PROFILE"><span class="jarvis-link-icon">●</span><span class="jarvis-link-copy">PROFILE<small>PARTICIPANT COMMAND PROFILE</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="GENERAL RULES"><span class="jarvis-link-icon">≡</span><span class="jarvis-link-copy">RULES<small>EVENT PROTOCOLS &amp; GUIDELINES</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="CONTACTS"><span class="jarvis-link-icon">◉</span><span class="jarvis-link-copy">CONTACT US<small>CONNECT WITH EXCELSIOR COMMAND</small></span><i class="jarvis-link-arrow"></i></button></nav><div class="jarvis-status"><i></i>CORE ONLINE &nbsp;•&nbsp; SECURE LINK &nbsp;•&nbsp; READY</div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script src="registration-portals.js?v=23"></script><script src="content.js"></script><script src="page-loader.js"></script><script src="site-text.js"></script><script src="public-visual-overrides.js"></script>
+</body></html>

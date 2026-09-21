@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Events | EXCELSIOR'26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Orbitron:wght@500;600;700;800&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="events.css">
+<link rel="stylesheet" href="navigation.css"><link rel="stylesheet" href="jarvis-hud.css">
+</head>
+<body>
+<!-- JARVIS transition loader -->
+<div class="jarvis-loader" id="jarvisLoader" aria-hidden="true">
+  <div class="loader-reactor">
+    <span class="loader-ring loader-ring-a"></span>
+    <span class="loader-ring loader-ring-b"></span>
+    <img src="jarvis.webp" alt="J.A.R.V.I.S. Arc Reactor">
+    <span class="loader-scan"></span>
+  </div>
+  <div class="loader-title">J.A.R.V.I.S.</div>
+  <div class="loader-status" id="loaderStatus">INITIALIZING EVENT INTERFACE</div>
+  <div class="loader-line"><i></i></div>
+</div>
+
+<div class="space-backdrop" aria-hidden="true"></div>
+<div class="ambient-glow" aria-hidden="true"></div>
+<div class="events-vignette" aria-hidden="true"></div>
+
+<header class="events-header">
+  <a class="events-home page-link" href="site.html" aria-label="Back to home"><span class="home-icon">⌂</span><span>HOME</span></a>
+  <div class="events-heading">
+    <p>✦ EPISTEME // EXCELSIOR'26 ✦</p>
+    <h1>EVENTS</h1>
+    <span>CHOOSE YOUR BATTLE</span>
+  </div>
+  <button class="jarvis-orb" id="jarvisBtn" type="button" aria-label="Open JARVIS menu">
+    <span class="jarvis-ring ring-a"></span><span class="jarvis-ring ring-b"></span>
+    <img src="jarvis.webp" alt="J.A.R.V.I.S." class="jarvis-image">
+    <span class="jarvis-scan"></span>
+    <span class="jarvis-label">J.A.R.V.I.S.</span>
+  </button>
+</header>
+
+<div class="scroll-indicator" aria-hidden="true"><span>SCROLL</span><i></i></div>
+
+<main class="events-list" aria-label="Event portal">
+  <section class="event-section mind" data-event="SYMPOSIUM 1" data-color="#ffd83d">
+    <div class="stone-visual"><div class="stone-halo"></div><img src="assets/events-stones/mind-stone.jpeg" alt="Symposium 1" loading="eager"></div>
+    <div class="event-content">
+      <p class="stone-index" >01 // SYMPOSIUM 1</p><p class="stone-name" >SYMPOSIUM 1</p>
+      <h2 >SYMPOSIUM 1</h2><p class="event-description" >Academic presentation and clinical innovation.<br>Present your work with clarity and impact.</p>
+      <button class="event-button event-placeholder" type="button"><span>VIEW DETAILS</span><b>›</b></button>
+    </div>
+  </section>
+
+  <section class="event-section space" data-event="SYMPOSIUM 2" data-color="#36aaff">
+    <div class="stone-visual"><div class="stone-halo"></div><img src="assets/events-stones/space-stone.jpeg" alt="Symposium 2" loading="lazy"></div>
+    <div class="event-content">
+      <p class="stone-index" >02 // SYMPOSIUM 2</p><p class="stone-name" >SYMPOSIUM 2</p>
+      <h2 >SYMPOSIUM 2</h2><p class="event-description" >Academic presentation and clinical innovation.<br>Present your work with clarity and impact.</p>
+      <button class="event-button event-placeholder" type="button"><span>VIEW DETAILS</span><b>›</b></button>
+    </div>
+  </section>
+
+  <section class="event-section power" data-event="JUNIOR QUIZ" data-color="#d94dff">
+    <div class="stone-visual"><div class="stone-halo"></div><img src="assets/events-stones/power-stone.jpeg" alt="Junior Quiz" loading="lazy"></div>
+    <div class="event-content">
+      <p class="stone-index" >03 // JUNIOR QUIZ</p><p class="stone-name" >JUNIOR QUIZ</p>
+      <h2 >JUNIOR QUIZ</h2><p class="event-description" >Fast questions, sharp minds.<br>Compete, recall and conquer.</p>
+      <button class="event-button event-placeholder" type="button"><span>VIEW DETAILS</span><b>›</b></button>
+    </div>
+  </section>
+
+  <section class="event-section time" data-event="SENIOR QUIZ" data-color="#64ff48">
+    <div class="stone-visual"><div class="stone-halo"></div><img src="assets/events-stones/time-stone.jpeg" alt="Senior Quiz" loading="lazy"></div>
+    <div class="event-content">
+      <p class="stone-index" >04 // SENIOR QUIZ</p><p class="stone-name" >SENIOR QUIZ</p>
+      <h2 >SENIOR QUIZ</h2><p class="event-description" >Advanced questions for senior minds.<br>Think fast, answer faster.</p>
+      <button class="event-button event-placeholder" type="button"><span>VIEW DETAILS</span><b>›</b></button>
+    </div>
+  </section>
+
+  <section class="event-section reality" data-event="MEME & SLOGAN" data-color="#ff3e3e">
+    <div class="stone-visual"><div class="stone-halo"></div><img src="assets/events-stones/reality-stone.jpeg" alt="Meme & Slogan" loading="lazy"></div>
+    <div class="event-content">
+      <p class="stone-index" >05 // MEME & SLOGAN</p><p class="stone-name" >MEME & SLOGAN</p>
+      <h2 >MEME & SLOGAN</h2><p class="event-description" >Create, caption and make it memorable.<br>Turn ideas into impact.</p>
+      <button class="event-button event-placeholder" type="button"><span>VIEW DETAILS</span><b>›</b></button>
+    </div>
+  </section>
+
+  <section class="event-section soul" data-event="POSTER" data-color="#ff9f25">
+    <div class="stone-visual"><div class="stone-halo"></div><img src="assets/events-stones/soul-stone.jpeg" alt="Poster" loading="lazy"></div>
+    <div class="event-content">
+      <p class="stone-index" >06 // POSTER</p><p class="stone-name" >POSTER</p>
+      <h2 >POSTER</h2><p class="event-description" >Design the message.<br>Make your visual statement stand out.</p>
+      <button class="event-button event-placeholder" type="button"><span>VIEW DETAILS</span><b>›</b></button>
+    </div>
+  </section>
+</main>
+
+<div class="jarvis-panel" id="jarvisPanel" aria-hidden="true">
+  <div class="jarvis-hud" role="dialog" aria-label="J.A.R.V.I.S. command interface">
+    <header class="jarvis-hud-header">
+      <div class="jarvis-brand"><strong>J A R V I S</strong><span>YOUR EVENT ASSISTANT</span><i class="jarvis-header-line"></i></div>
+      <div class="jarvis-header-meta"><b>NAVIGATE</b> &nbsp;•&nbsp; EXPLORE &nbsp;•&nbsp; ACHIEVE</div>
+    </header>
+    <button class="jarvis-close" id="jarvisClose" type="button">CLOSE INTERFACE</button>
+    <section class="jarvis-core-zone" aria-label="JARVIS core">
+      <div class="jarvis-core">
+        <span class="core-ring a"></span><span class="core-ring b"></span>
+        <img src="jarvis.webp" alt="J.A.R.V.I.S.">
+        <span class="core-scan"></span>
+      </div>
+      <div class="jarvis-core-label"><strong>J.A.R.V.I.S.</strong><span>COMMAND CORE // ONLINE</span></div>
+    </section>
+    <nav class="jarvis-links" aria-label="JARVIS navigation">
+      <button type="button" data-target="HOME"><span class="jarvis-link-icon">⌂</span><span class="jarvis-link-copy">HOME<small>RETURN TO COMMAND DECK</small></span><i class="jarvis-link-arrow"></i></button>
+      <button type="button" data-target="REGISTRATIONS"><span class="jarvis-link-icon">▣</span><span class="jarvis-link-copy">REGISTRATION<small>ACCESS EVENT REGISTRATION</small></span><i class="jarvis-link-arrow"></i></button>
+      <button type="button" data-target="PROFILE"><span class="jarvis-link-icon">●</span><span class="jarvis-link-copy">PROFILE<small>PARTICIPANT COMMAND PROFILE</small></span><i class="jarvis-link-arrow"></i></button>
+      <button type="button" data-target="GENERAL RULES"><span class="jarvis-link-icon">≡</span><span class="jarvis-link-copy">RULES<small>EVENT PROTOCOLS &amp; GUIDELINES</small></span><i class="jarvis-link-arrow"></i></button>
+      <button type="button" data-target="CONTACTS"><span class="jarvis-link-icon">◉</span><span class="jarvis-link-copy">CONTACT US<small>CONNECT WITH EXCELSIOR COMMAND</small></span><i class="jarvis-link-arrow"></i></button>
+    </nav>
+    <div class="jarvis-status"><i></i>CORE ONLINE &nbsp;•&nbsp; SECURE LINK &nbsp;•&nbsp; READY</div>
+  </div>
+</div>
+<footer><span>●</span><b>EPISTEME // EXCELSIOR'26</b><i>DOOM PREVAILS</i></footer>
+<script src="events.js?v=15"></script>
+<script src="content.js"></script><script src="navigation.js"></script><script src="page-loader.js"></script><script src="site-text.js"></script><script src="public-visual-overrides.js"></script>
+</body>
+</html>

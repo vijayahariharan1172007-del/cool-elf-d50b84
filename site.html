@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EXCELSIOR'26 | EPISTEME</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Orbitron:wght@500;600;700;800&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="navigation.css">
+<link rel="stylesheet" href="jarvis-hud.css">
+</head>
+<body>
+<div class="jarvis-loader" id="jarvisLoader" aria-hidden="true">
+  <div class="loader-reactor"><span class="loader-ring loader-ring-a"></span><span class="loader-ring loader-ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S. Arc Reactor"><span class="loader-scan"></span></div>
+  <div class="loader-title">J.A.R.V.I.S.</div><div class="loader-status" id="loaderStatus">INITIALIZING EXCELSIOR INTERFACE</div><div class="loader-line"><i></i></div>
+</div>
+<div class="site-bg"></div>
+<div class="green-clouds"></div>
+<canvas id="lightningCanvas"></canvas>
+<canvas id="energyCanvas"></canvas>
+<div class="vignette"></div>
+
+<header class="topbar">
+  <div class="brand-lockup">
+    <div class="brand-logo" aria-label="EPISTEME logo"><img src="assets/logo.png" alt="" onerror="this.style.display='none'"></div>
+    <div class="brand-copy">
+      <strong>EPISTEME</strong>
+      <small>P R E S E N T S</small>
+    </div>
+  </div>
+  <div class="hud-label top-center">✦ &nbsp; EXCELSIOR'26 &nbsp; ✦</div>
+  <button class="jarvis-orb" id="jarvisButton" type="button" aria-label="Open JARVIS menu">
+    <span class="jarvis-ring ring-a"></span><span class="jarvis-ring ring-b"></span>
+    <img src="jarvis.webp" alt="J.A.R.V.I.S." class="jarvis-image">
+    <span class="jarvis-scan"></span>
+    <span class="jarvis-label">J.A.R.V.I.S.</span>
+  </button>
+</header>
+
+<main class="hero">
+  <div class="hud-label side-label side-left">EXCELSIOR'26</div>
+  <div class="hud-label side-label side-right">REGISTRATION</div>
+
+  <section class="title-block">
+    <p class="eyebrow">E P I S T E M E &nbsp; P R E S E N T S</p>
+    <h1>EXCELSIOR<span>'26</span></h1>
+    <div class="title-rule"></div>
+    <p class="subtitle">A N &nbsp; I N T E R C O L L E G E &nbsp; E V E N T</p>
+  </section>
+
+  <section class="enter-zone" aria-label="Enter event">
+    <div class="energy-orbit orbit-one"></div>
+    <div class="energy-orbit orbit-two"></div>
+    <div class="ground-core"></div>
+
+    <button class="excelsior-access" id="enterButton" type="button" aria-label="Enter Excelsior">
+      <span class="access-edge access-edge-a"></span>
+      <span class="access-edge access-edge-b"></span>
+      <span class="access-icon" aria-hidden="true">→</span>
+      <span class="access-copy">
+        <small>EXCELSIOR'26 // COMMAND ACCESS</small>
+        <strong>ENTER EXCELSIOR</strong>
+      </span>
+      <span class="access-sheen" aria-hidden="true"></span>
+    </button>
+    <p class="interaction-hint">ACCESS THE EXPERIENCE &nbsp; // &nbsp; EXCELSIOR'26</p>
+  </section>
+
+  <section class="lower-motto">
+    <span>KNOWLEDGE IS POWER.</span>
+    <span>POWER IS DOOM.</span>
+  </section>
+</main>
+
+<div class="enter-flash" id="enterFlash"></div>
+<div class="portal-panel" id="portalPanel" aria-hidden="true">
+  <div class="portal-command" role="dialog" aria-label="EXCELSIOR command navigation">
+    <div class="portal-atmosphere"></div>
+    <div class="portal-topline"><span>EXCELSIOR'26</span><i></i><small>COMMAND INTERFACE / SECURE ACCESS</small></div>
+
+    <div class="command-tech-field" aria-hidden="true">
+      <div class="tech-frame"></div>
+      <div class="tech-rings"><span></span><span></span><span></span></div>
+      <div class="tech-scan"></div>
+      <div class="tech-crosshair"></div>
+      <div class="tech-label">COMMAND DECK <b>//</b> ONLINE</div>
+    </div>
+
+    <div class="command-stage">
+      <nav class="command-nodes" aria-label="EXCELSIOR destinations">
+        <button class="command-node node-events" data-target="EVENTS" type="button"><span class="node-icon">✦</span><span class="node-text"><b>EVENTS</b><small>EXPLORE</small></span><i></i></button>
+        <button class="command-node node-registration" data-target="REGISTRATIONS" type="button"><span class="node-icon">⌁</span><span class="node-text"><b>REGISTRATION</b><small>ENTER PORTAL</small></span><i></i></button>
+        <button class="command-node node-profile" data-target="PROFILE" type="button"><span class="node-icon">◉</span><span class="node-text"><b>PROFILE</b><small>YOUR SPACE</small></span><i></i></button>
+        <button class="command-node node-rules" data-target="GENERAL RULES" type="button"><span class="node-icon">≡</span><span class="node-text"><b>RULES</b><small>PROTOCOL</small></span><i></i></button>
+        <button class="command-node node-contact" data-target="CONTACTS" type="button"><span class="node-icon">◇</span><span class="node-text"><b>CONTACT US</b><small>CONNECT</small></span><i></i></button>
+      </nav>
+    </div>
+
+    <div class="portal-command-status"><span></span> SYSTEM ONLINE <b>•</b> ACCESS GRANTED <b>•</b> READY</div>
+    <button class="portal-close" id="portalClose" type="button" aria-label="Close command interface">×</button>
+  </div>
+</div>
+
+<div class="jarvis-panel" id="jarvisPanel" aria-hidden="true">
+  <div class="jarvis-hud" role="dialog" aria-label="J.A.R.V.I.S. command interface">
+    <header class="jarvis-hud-header">
+      <div class="jarvis-brand"><strong>J A R V I S</strong><span>YOUR EVENT ASSISTANT</span><i class="jarvis-header-line"></i></div>
+      <div class="jarvis-header-meta"><b>NAVIGATE</b> &nbsp;•&nbsp; EXPLORE &nbsp;•&nbsp; ACHIEVE</div>
+    </header>
+    <button class="jarvis-close" id="jarvisClose" type="button">CLOSE INTERFACE</button>
+    <section class="jarvis-core-zone" aria-label="JARVIS core">
+      <div class="jarvis-core">
+        <span class="core-ring a"></span><span class="core-ring b"></span>
+        <img src="jarvis.webp" alt="J.A.R.V.I.S.">
+        <span class="core-scan"></span>
+      </div>
+      <div class="jarvis-core-label"><strong>J.A.R.V.I.S.</strong><span>COMMAND CORE // ONLINE</span></div>
+    </section>
+    <nav class="jarvis-links" aria-label="JARVIS navigation">
+      <button type="button" data-target="HOME"><span class="jarvis-link-icon">⌂</span><span class="jarvis-link-copy">HOME<small>RETURN TO COMMAND DECK</small></span><i class="jarvis-link-arrow"></i></button>
+      <button type="button" data-target="REGISTRATIONS"><span class="jarvis-link-icon">▣</span><span class="jarvis-link-copy">REGISTRATION<small>ACCESS EVENT REGISTRATION</small></span><i class="jarvis-link-arrow"></i></button>
+      <button type="button" data-target="PROFILE"><span class="jarvis-link-icon">●</span><span class="jarvis-link-copy">PROFILE<small>PARTICIPANT COMMAND PROFILE</small></span><i class="jarvis-link-arrow"></i></button>
+      <button type="button" data-target="GENERAL RULES"><span class="jarvis-link-icon">≡</span><span class="jarvis-link-copy">RULES<small>EVENT PROTOCOLS &amp; GUIDELINES</small></span><i class="jarvis-link-arrow"></i></button>
+      <button type="button" data-target="CONTACTS"><span class="jarvis-link-icon">◉</span><span class="jarvis-link-copy">CONTACT US<small>CONNECT WITH EXCELSIOR COMMAND</small></span><i class="jarvis-link-arrow"></i></button>
+    </nav>
+    <div class="jarvis-status"><i></i>CORE ONLINE &nbsp;•&nbsp; SECURE LINK &nbsp;•&nbsp; READY</div>
+  </div>
+</div>
+<footer><span>●</span> EXCELSIOR'26 // SYSTEM ONLINE <i>DOOM PREVAILS</i></footer>
+<script src="script.js"></script>
+<script src="content.js"></script><script src="navigation.js"></script><script src="page-loader.js"></script><script src="site-text.js"></script><script src="public-visual-overrides.js"></script>
+</body>
+</html>

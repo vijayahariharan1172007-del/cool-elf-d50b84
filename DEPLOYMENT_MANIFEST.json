@@ -1,0 +1,21 @@
+{
+  "version": "8.0.0",
+  "purpose": "EXCELSIOR'26 public participant portal \u2014 audited/rebuilt",
+  "hosting": "Netlify",
+  "database": "Supabase",
+  "authentication": {
+    "master": "Master User ID + password",
+    "admin": "Admin User ID + password",
+    "participant": "Master ID + registered phone; signed 30-minute shared participant session"
+  },
+  "portal_otp": false,
+  "notes": [
+    "Public package contains participant-facing routes only; Admin/Master UI remains separate.",
+    "Participant access token is HMAC-signed and expires exactly 30 minutes after successful verification or Master ID creation.",
+    "The same valid participant session is reused across Event Registration and Abstract Submission portals.",
+    "Abstract submission is allowed only for an event the participant is actually registered for and configured/recognized as submission-based.",
+    "Netlify function entrypoints delegate to the shared API handlers; no duplicate broken abstract wrapper remains.",
+    "Supabase service-role credentials are not bundled.",
+    "Created a standalone profile portal and removed profile UI/state from event registration portal."
+  ]
+}

@@ -1,0 +1,2 @@
+const {supabase,ok,fail}=require('../lib/server');
+module.exports=async(req,res)=>{try{if(req.method!=='POST')return fail(res,405,'Method not allowed');const pageKey=String(req.body?.page_key||'').trim();if(!/^[a-z0-9_-]{1,40}$/i.test(pageKey))return fail(res,400,'Invalid page key');const {data,error}=await supabase.from('site_text_overrides').select('selector,text_index,value').eq('page_key',pageKey);if(error)throw error;return ok(res,{ok:true,overrides:data||[]})}catch(e){return fail(res,500,'Unable to load text overrides')}};

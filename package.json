@@ -1,0 +1,15 @@
+{
+  "name": "excelsior26-netlify-backend",
+  "private": true,
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.0",
+    "nodemailer": "^7.0.6",
+    "qrcode": "^1.5.4",
+    "twilio": "^5.10.3",
+    "pdfkit": "^0.17.2"
+  },
+  "scripts": {
+    "start": "node local-server.js",
+    "dev": "node local-server.js"
+  }
+}
