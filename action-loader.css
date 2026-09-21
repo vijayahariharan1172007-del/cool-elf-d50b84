@@ -1,0 +1,17 @@
+#jarvisActionLoader{position:fixed;inset:0;z-index:10050;display:grid;place-items:center;padding:18px;background:rgba(0,3,7,.28);backdrop-filter:blur(2px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility .18s ease}
+#jarvisActionLoader.open{opacity:1;visibility:visible;pointer-events:auto}
+.jarvis-action-card{width:min(330px,88vw);padding:22px 22px 18px;text-align:center;border:1px solid rgba(91,225,255,.48);border-radius:9px;background:linear-gradient(145deg,rgba(5,18,27,.98),rgba(2,8,13,.98));box-shadow:0 0 35px rgba(24,177,235,.16),inset 0 0 28px rgba(37,187,236,.045)}
+.jarvis-action-reactor{position:relative;width:62px;height:62px;margin:0 auto 12px;display:grid;place-items:center;border-radius:50%;filter:drop-shadow(0 0 12px rgba(82,236,255,.55))}
+.jarvis-action-reactor img{width:46px;height:46px;border-radius:50%;object-fit:cover;mix-blend-mode:screen}
+.jarvis-action-ring{position:absolute;border:1px solid rgba(101,239,255,.75);border-radius:50%}
+.jarvis-action-ring.a{inset:2px;border-top-color:transparent;border-bottom-color:#6df3ff;animation:jalSpin 1.9s linear infinite}
+.jarvis-action-ring.b{inset:-6px;border-left-color:transparent;border-right-color:rgba(97,217,255,.55);animation:jalSpin 2.8s linear infinite reverse}
+.jarvis-action-scan{position:absolute;inset:8px;border-radius:50%;overflow:hidden}
+.jarvis-action-scan:after{content:"";position:absolute;left:10%;right:10%;height:1px;top:5%;background:#8af8ff;box-shadow:0 0 9px #5deeff;animation:jalScan 1.5s ease-in-out infinite}
+.jarvis-action-kicker{margin:0;color:#72e9ff;font:800 8px/1 Orbitron,sans-serif;letter-spacing:.18em}
+.jarvis-action-title{margin:7px 0 5px;color:#e4fcff;font:800 15px/1.2 Orbitron,sans-serif;letter-spacing:.1em}
+.jarvis-action-status{min-height:12px;color:#75aebb;font:600 8px/1.5 Orbitron,sans-serif;letter-spacing:.08em}
+.jarvis-action-progress{height:2px;margin:13px auto 0;width:min(210px,75%);overflow:hidden;background:rgba(114,229,255,.12)}
+.jarvis-action-progress i{display:block;width:35%;height:100%;background:#73efff;box-shadow:0 0 10px #73efff;animation:jalProgress 1.1s ease-in-out infinite}
+@keyframes jalSpin{to{transform:rotate(360deg)}}@keyframes jalScan{0%,100%{top:8%;opacity:.1}50%{top:88%;opacity:.9}}@keyframes jalProgress{0%{transform:translateX(-120%)}50%{transform:translateX(170%)}100%{transform:translateX(360%)}}
+@media(prefers-reduced-motion:reduce){#jarvisActionLoader *{animation:none!important}}
