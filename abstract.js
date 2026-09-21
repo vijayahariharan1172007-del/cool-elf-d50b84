@@ -9,8 +9,8 @@
  };
  const api=async(body)=>{
    const r=await fetch('/api/submit-abstract',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-   const j=await r.json().catch(()=>({}));
-   if(!r.ok||j.ok===false)throw Error(j.error||'Request failed');
+   const raw=await r.text();let j={};try{j=JSON.parse(raw)}catch{}
+   if(!r.ok||j.ok===false){const detail=j.error||(raw&&raw.slice(0,240))||`HTTP ${r.status}`;throw Error(`${detail} [HTTP ${r.status}]`);}
    return j;
  };
  const sessionApi=async(body)=>{
