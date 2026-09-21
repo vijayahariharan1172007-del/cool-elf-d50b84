@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Orbitron:wght@500;600;700;800&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="registration.css"><link rel="stylesheet" href="portal-theme.css"><link rel="stylesheet" href="navigation.css"><link rel="stylesheet" href="jarvis-hud.css">
-</head>
+<style>.participant-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}.participant-grid label,.abstract-fields label{display:flex;flex-direction:column;gap:7px}.participant-grid input,.abstract-fields input[type=file]{width:100%;box-sizing:border-box}.field-help{margin:8px 0 0;color:rgba(255,255,255,.65);font-size:.78rem;line-height:1.5}.abstract-fields{margin-top:18px}.file-drop{border:1px dashed rgba(240,190,100,.45);padding:16px;border-radius:14px;cursor:pointer;background:rgba(255,255,255,.025)}.file-drop span{display:block;margin-top:8px;font-size:.78rem;color:rgba(255,255,255,.65)}@media(max-width:640px){.participant-grid{grid-template-columns:1fr}}</style></head>
 <body class="portal-ref-body">
 <div class="jarvis-loader" id="jarvisLoader" aria-hidden="true"><div class="loader-reactor"><span class="loader-ring loader-ring-a"></span><span class="loader-ring loader-ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S. Arc Reactor"><span class="loader-scan"></span></div><div class="loader-title">J.A.R.V.I.S.</div><div class="loader-status" id="loaderStatus">CONNECTING</div><div class="loader-line"><i></i></div></div>
 <div class="red-atmosphere"></div><canvas id="webCanvas" aria-hidden="true"></canvas><div class="registration-watermark" aria-hidden="true"></div><div class="vignette"></div>
@@ -27,13 +27,26 @@
  <div class="gate-card access-panel">
   <div class="selected-entry" id="identityEvent"></div>
   <div class="verified-main" id="verifiedMain"></div>
+  <div class="participant-fields" id="participantFields">
+   <div class="section-title"><span>01</span> PARTICIPANT DETAILS</div>
+   <div class="participant-grid">
+    <label>MASTER ID<input id="mainMasterId" type="text" placeholder="EX26-000000" maxlength="11" autocomplete="off"></label>
+    <label>REGISTERED MOBILE<input id="mainMobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" autocomplete="tel"></label>
+   </div>
+   <p class="field-help">Re-enter the Master ID and registered mobile number used during pre-registration.</p>
+  </div>
   <div id="teamFields" class="team-fields" hidden>
    <div class="section-title"><span>1A</span> TEAM MEMBERS</div>
-   <p class="team-help">For team events, add every team member here before continuing to payment. Enter each member's Master ID and registered mobile number. All members will be verified and their details will be saved with this registration.</p>
+   <p class="team-help">For team events, add every team member here. Enter each member's Master ID and registered mobile number.</p>
    <div id="teamMemberRows"></div>
    <button class="verify-btn" id="addTeamMember" type="button">+ ADD TEAM MEMBER</button>
   </div>
-  <button class="continue-btn" id="continueToPay" type="button">CONTINUE TO PAY <b>→</b></button>
+  <div id="abstractFields" class="abstract-fields" hidden>
+   <div class="section-title"><span>02</span> ABSTRACT / SUBMISSION</div>
+   <p class="team-help">This event requires a submission. Upload the abstract/work file now. Accepted formats: PDF, DOC or DOCX, up to 10 MB.</p>
+   <label class="file-drop">UPLOAD ABSTRACT / SUBMISSION<input id="abstractFile" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"><span id="abstractFileName">NO FILE SELECTED</span></label>
+  </div>
+  <button class="continue-btn" id="continueToPay" type="button">CONTINUE <b>→</b></button>
   <p class="gate-status" id="identityStatus" role="status"></p>
  </div>
 </section>
