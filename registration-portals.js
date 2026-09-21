@@ -184,6 +184,13 @@ $('continueToPortal').addEventListener('click',async()=>{
  setTimeout(()=>{$('creationOverlay').hidden=true;document.body.classList.remove('creation-active');btn.disabled=false},450);
 });
 
+$('downloadEventCard').addEventListener('click',()=>downloadCard('EVENT REGISTRATION CARD',[
+ ['Participant',auth?.master?.name||''],
+ ['Master ID',auth?.master?.masterId||''],
+ ['Registered Gmail',auth?.master?.email||$('registeredEmail').value],
+ ['Event',current?.displayTitle||current?.title||''],
+ ['Status','REGISTERED']
+],(current?.key||'event')+'-registration-card.html'));
 $('abstractButton').addEventListener('click',()=>location.href='abstract.html');
 $('closeSuccess').addEventListener('click',()=>{$('successOverlay').hidden=true;showSection('identityGate')});
 
