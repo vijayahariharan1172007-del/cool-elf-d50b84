@@ -71,7 +71,12 @@
   $('identityEvent').innerHTML=`<span>SELECTED EVENT</span><b>${currentPortal.displayTitle||currentPortal.title}</b><strong>${Number(currentPortal.fee||0)?'₹'+currentPortal.fee:'FREE'}</strong>`;
   $('verifiedMain').innerHTML=`<span>MAIN PARTICIPANT</span><b>${auth.master.name||'PARTICIPANT'}</b><strong>${auth.master.masterId} • ${auth.master.phone||''}</strong>`;
   $('identityStatus').textContent='';auth.teamMembers=[];$('teamMemberRows').innerHTML='';
+  $('mainMasterId').value=auth.master.masterId||'';
+  $('mainMobile').value=normalizePhone(auth.master.phone||'');
   $('teamFields').hidden=!currentPortal.team;
+  const needsAbstract=currentPortal.requires_abstract===true || ['symposium-1','symposium-2','poster-slogan','meme'].includes(currentPortal.key);
+  $('abstractFields').hidden=!needsAbstract;
+  $('abstractFile').value='';$('abstractFileName').textContent='NO FILE SELECTED';
   if(currentPortal.team)addTeamRow();
  }
 
@@ -89,6 +94,16 @@
   if(!auth?.accessToken)return showParticipant();
   const btn=$('continueToPay');btn.disabled=true;$('identityStatus').textContent='CHECKING REGISTRATION DETAILS…';
   try{
+   const mainId=normalizeId($('mainMasterId').value),mainPhone=normalizePhone($('mainMobile').value);
+   if(mainId!==normalizeId(auth.master.masterId)||mainPhone!==normalizePhone(auth.master.phone))throw Error('Master ID or registered mobile number does not match the verified participant.');
+   const needsAbstract=currentPortal.requires_abstract===true || ['symposium-1','symposium-2','poster-slogan','meme'].includes(currentPortal.key);
+   if(needsAbstract){
+    const f=$('abstractFile').files?.[0];
+    if(!f)throw Error('UPLOAD THE REQUIRED ABSTRACT / SUBMISSION FILE FIRST.');
+    const ext=(f.name.split('.').pop()||'').toLowerCase();
+    if(!['pdf','doc','docx'].includes(ext))throw Error('ONLY PDF, DOC OR DOCX FILES ARE ALLOWED.');
+    if(f.size>10*1024*1024)throw Error('THE ABSTRACT / SUBMISSION FILE MUST BE 10 MB OR SMALLER.');
+   }
    if(currentPortal?.team){
     const rows=[...document.querySelectorAll('.team-member-row')];if(!rows.length)throw Error('ADD AT LEAST ONE TEAM MEMBER');
     const seen=new Set([auth.master.masterId]);const verified=[];
@@ -106,9 +121,20 @@
  };
 
  function showPayment(){
-  $('identityGate').hidden=true;$('paymentGate').hidden=false;$('gateSerial').textContent=currentPortal.serial;$('gateTitle').textContent='PAYMENT';$('gateType').textContent=currentPortal.displayTitle||currentPortal.title;$('gateAmount').textContent=Number(currentPortal.fee||0)?'₹'+currentPortal.fee:'FREE';$('gateNote').textContent=currentPortal.note||'Complete payment and enter the UTR before confirming registration.';$('gateUtr').value='';$('gateStatus').textContent='';
-  const q=$('gateQr');q.textContent='';if(Number(currentPortal.fee||0)){if(currentPortal.qr){const img=new Image();img.src=currentPortal.qr;img.alt='Payment QR';img.onload=()=>q.replaceChildren(img);img.onerror=()=>q.textContent='QR NOT AVAILABLE';}else q.textContent='QR NOT CONFIGURED';}else q.textContent='FREE ENTRY';
- }
+  const paid=Number(currentPortal.fee||0)>0;
+  $('identityGate').hidden=true;$('paymentGate').hidden=false;
+  $('gateSerial').textContent=currentPortal.serial;
+  $('gateTitle').textContent=paid?'PAYMENT':'CONFIRMATION';
+  $('gateType').textContent=currentPortal.displayTitle||currentPortal.title;
+  $('gateAmount').textContent=paid?'₹'+currentPortal.fee:'NO PAYMENT';
+  $('gateNote').textContent=paid?(currentPortal.note||'Complete payment and enter the UTR before confirming registration.'):'This event has no registration fee. No payment or UTR is required.';
+  $('gateUtr').value='';$('gateStatus').textContent='';
+  const utrLabel=document.querySelector('#gateUtr')?.closest('label'); if(utrLabel)utrLabel.hidden=!paid;
+  const q=$('gateQr');q.textContent='';
+  if(paid){
+   if(currentPortal.qr){const img=new Image();img.src=currentPortal.qr;img.alt='Payment QR';img.onload=()=>q.replaceChildren(img);img.onerror=()=>q.textContent='QR NOT AVAILABLE';}else q.textContent='QR NOT CONFIGURED';
+  }else q.textContent='FREE ENTRY • NO PAYMENT REQUIRED';
+}
  $('backToIdentity').onclick=()=>{$('paymentGate').hidden=true;$('identityGate').hidden=false;};
  $('confirmRegistration').onclick=async()=>{
   if(!auth?.accessToken)return $('gateStatus').textContent='SESSION EXPIRED. PLEASE VERIFY AGAIN.';
