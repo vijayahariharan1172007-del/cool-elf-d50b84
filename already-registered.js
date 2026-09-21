@@ -1,6 +1,6 @@
 (()=>{
  const $=id=>document.getElementById(id);
- const normalizeId=v=>{let s=String(v??'').normalize('NFKC').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');if(/^EX26\d{1,6}$/.test(s))s='EX26-'+s.slice(4).padStart(6,'0');else if(/^EX26\d{6}$/.test(s))s='EX26-'+s.slice(4);return s};
+ const normalizeId=v=>{let s=String(v??'').normalize('NFKC').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');if(/^EX26\d{6}$/.test(s))s='EX26-'+s.slice(4);return s};
  const normalizePhone=v=>String(v??'').replace(/\D/g,'').slice(-10);
  const setStatus=(message,type='')=>{const el=$('accessStatus');el.textContent=message;el.dataset.state=type};
  const api=async(body)=>{
