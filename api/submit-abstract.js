@@ -1,4 +1,4 @@
-const {supabase,ok,fail,verifyProof}=require('../lib/server');
+const {supabase,ok,fail,verifyProof,getSupabaseClient}=require('../lib/server');
 
 const fallbackSubmissionEvent=(eventKey,eventTitle)=>{
   const k=String(eventKey||'').toLowerCase(), t=String(eventTitle||'').toLowerCase();
@@ -71,7 +71,8 @@ module.exports=async(req,res)=>{
       if(!Number.isFinite(fileSize)||fileSize<=0||fileSize>10*1024*1024)return fail(res,400,'File must be 10 MB or smaller');
       const safeName=fileName.replace(/[^a-zA-Z0-9._-]/g,'_').slice(-140);
       const path=`${id}/${reg.event_key}/${Date.now()}-${safeName}`;
-      const signed=supabase.storage.from('abstract-submissions');
+      const dbClient=await getSupabaseClient();
+      const signed=dbClient.storage.from('abstract-submissions');
       const created=await signed.createSignedUploadUrl(path,{upsert:false});
       if(created.error)throw created.error;
       return ok(res,{ok:true,path:created.data.path,signedUrl:created.data.signedUrl,token:created.data.token});
