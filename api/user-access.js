@@ -20,13 +20,16 @@ module.exports=async(req,res)=>{try{
  if(/^EX26-?\d{1,6}$/.test(id)){const digits=id.slice(4).replace(/\D/g,'');id='EX26-'+digits.padStart(6,'0');}
  const phoneDigits=String(b.phone??b.mobile??b.registeredMobile??b.registered_mobile??'').normalize('NFKC').replace(/\D/g,'');
  const phone=phoneDigits.slice(-10);
+ const email=String(b.email??b.gmail??'').trim().toLowerCase();
  if(!/^EX26-\d{6}$/.test(id)||!/^[0-9]{10}$/.test(phone))return fail(res,400,'Enter your Master ID and registered 10-digit mobile number.');
+ if(email&&!/^[a-z0-9._%+-]+@gmail\.com$/.test(email))return fail(res,400,'Enter the registered Gmail address.');
  const {data,error}=await supabase.from('master_registrations').select('*').eq('master_id',id).maybeSingle();
  if(error)throw error;
  if(!data)return fail(res,401,'Master ID not found. Check the Master ID issued during pre-registration.');
  const storedDigits=String(data.phone||'').replace(/\D/g,'');
  const stored=storedDigits.slice(-10);
  if(stored!==phone)return fail(res,401,'Master ID recognised, but the registered mobile number does not match.');
+ if(email&&String(data.email||'').trim().toLowerCase()!==email)return fail(res,401,'Master ID recognised, but the registered Gmail does not match.');
  const sessionMinutes=30;
  const sessionExpiresAt=Date.now()+sessionMinutes*60*1000;
  const accessToken=await signProof('access',{masterId:data.master_id,name:data.full_name,phone:data.phone},sessionMinutes*60*1000);
