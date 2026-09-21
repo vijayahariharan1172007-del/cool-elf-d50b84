@@ -84,7 +84,7 @@ document.querySelectorAll('.jarvis-links button').forEach(btn=>btn.addEventListe
   if(target==='REGISTRATIONS'){location.href='registration.html';return;}
   if(target==='PROFILE'){location.href='profile.html';return;}
   if(target==='EVENTS'){location.href='events.html';return;}
-  if(target==='GENERAL RULES'){location.href='general-rules.html';return;}
+  if(target==='BROCHURE'){location.href='general-rules.html';return;}
   if(target==='CONTACTS'){location.href='contact.html';return;}
   btn.textContent=target+' // ONLINE';
   setTimeout(()=>{btn.textContent=target},700);
@@ -104,7 +104,7 @@ document.querySelectorAll('.command-node').forEach(btn=>btn.addEventListener('cl
   if(target==='REGISTRATIONS'){location.href='registration.html';return;}
   if(target==='PROFILE'){location.href='profile.html';return;}
   if(target==='EVENTS'){location.href='events.html';return;}
-  if(target==='GENERAL RULES'){location.href='general-rules.html';return;}
+  if(target==='BROCHURE'){location.href='general-rules.html';return;}
   if(target==='CONTACTS'){location.href='contact.html';return;}
   btn.textContent=target+' // LOADING';
   setTimeout(()=>{btn.textContent=target},650);
