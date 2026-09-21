@@ -10,9 +10,11 @@ module.exports=async(req,res)=>{try{
  const dbPhone=String(master.data.phone||'').replace(/\D/g,'').slice(-10);
  const proofPhone=String(access.phone||'').replace(/\D/g,'').slice(-10);
  if(master.data.full_name!==access.name||dbPhone!==proofPhone)return fail(res,401,'Registration access session is no longer valid.');
- const direct=await supabase.from('event_registrations').select('id,event,event_key,status,created_at,master_id,team_members').eq('master_id',id).order('created_at',{ascending:false});
+ const [direct,all]=await Promise.all([
+  supabase.from('event_registrations').select('id,event,event_key,status,created_at,master_id,team_members').eq('master_id',id).order('created_at',{ascending:false}),
+  supabase.from('event_registrations').select('id,event,event_key,status,created_at,master_id,team_members').order('created_at',{ascending:false})
+ ]);
  if(direct.error)throw direct.error;
- const all=await supabase.from('event_registrations').select('id,event,event_key,status,created_at,master_id,team_members').order('created_at',{ascending:false});
  if(all.error)throw all.error;
  const team=(all.data||[]).filter(row=>{if(String(row.master_id||'')===id)return false;const members=Array.isArray(row.team_members)?row.team_members:[];return members.some(m=>String(m?.masterId||m?.master_id||'').toUpperCase()===id.toUpperCase())});
  const byId=new Map();
