@@ -7,7 +7,7 @@ const fallbackSubmissionEvent=(eventKey,eventTitle)=>{
 
 async function getEligibleRegistrations(masterId){
   const [regsRes,portalsRes]=await Promise.all([
-    supabase.from('event_registrations').select('id,event_key,event').eq('master_id',masterId),
+    supabase.from('event_registrations').select('id,event_key,event,team_id,team_members').eq('master_id',masterId),
     supabase.from('registration_portals').select('key,title,requires_abstract,enabled')
   ]);
   if(regsRes.error)throw regsRes.error;
