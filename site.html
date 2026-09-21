@@ -21,6 +21,12 @@
     content:"";position:absolute;inset:0;
     background:radial-gradient(circle at 50% 46%,transparent 18%,rgba(0,8,5,.08) 42%,rgba(0,4,3,.58) 100%);
   }
+  .brand-lockup{display:flex!important;align-items:center!important;gap:10px!important;min-width:0!important}
+  .brand-logo{width:52px!important;height:52px!important;border-radius:50%!important;overflow:hidden!important;background:transparent!important;box-shadow:0 0 16px rgba(83,255,160,.22)!important;flex:0 0 52px!important}
+  .brand-logo img{width:100%!important;height:100%!important;object-fit:contain!important;display:block!important}
+  .brand-copy{display:flex!important;flex-direction:column!important;justify-content:center!important}
+  .brand-copy strong{font-family:Cinzel,Georgia,serif!important;font-size:clamp(.9rem,2vw,1.2rem)!important;letter-spacing:.16em!important;color:#f3ead0!important;text-shadow:0 1px 4px #000,0 0 10px rgba(83,255,160,.25)!important}
+  .brand-copy small{display:none!important}
   .excelsior-home{position:relative!important;min-height:calc(100svh - 82px);display:block!important;overflow:hidden!important}
   .home-title{
     position:absolute;z-index:12;top:9%;left:50%;transform:translateX(-50%);
@@ -49,6 +55,9 @@
   .excelsior-home .access-copy small{font-size:clamp(.38rem,1vw,.62rem)!important;letter-spacing:.28em!important}
   @media(max-width:680px){
     .excelsior-home{min-height:calc(100svh - 74px)!important}
+    .brand-lockup{gap:7px!important}
+    .brand-logo{width:42px!important;height:42px!important;flex-basis:42px!important}
+    .brand-copy strong{font-size:.78rem!important;letter-spacing:.13em!important}
     .home-title{top:7%}
     .home-title h1{font-size:clamp(2rem,10vw,3.25rem);letter-spacing:.06em}
     .home-title p{font-size:clamp(.42rem,2vw,.62rem);letter-spacing:.22em}
