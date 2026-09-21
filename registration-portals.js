@@ -158,12 +158,10 @@ $('continueToPortal').addEventListener('click',async()=>{
   const teamIds=[auth.master.masterId,...(current.verifiedTeam||[]).map(m=>m.masterId)].filter(Boolean);
   const teamBox=$('successTeamMembers'),teamIdsBox=$('successTeamIds'),masterLabel=$('successMasterLabel');
   if(current.team){
-    teamNumber.textContent=created.teamId||'—';
     teamBox.hidden=false;
     teamIdsBox.innerHTML=teamIds.map(x=>'<span class="team-id-chip">'+esc(x)+'</span>').join('');
     masterLabel.textContent='TEAM LEAD MASTER ID';
   }else{
-    teamNumber.textContent='—';
     teamBox.hidden=true;
     masterLabel.textContent='MASTER ID';
   }
