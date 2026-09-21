@@ -48,7 +48,7 @@
      if(!v.sessionValid)throw Error('Session expired');
      auth={accessToken:stored.accessToken,master:v.master,expiresAt:Number(v.sessionExpiresAt||stored.expiresAt||0)};
      localStorage.setItem(accessKey,JSON.stringify(auth));
-     await loadEligible();
+     location.href='abstract-portal.html';
      return true;
    }catch(e){
      localStorage.removeItem(accessKey);
@@ -62,7 +62,7 @@
    try{
      const v=await sessionApi({masterId,phone});
      saveSession(v);
-     await loadEligible();
+     location.href='abstract-portal.html';
    }catch(e){status.textContent=e.message;$('verifyAbstract').disabled=false;}
  };
  function openEditor(e){
