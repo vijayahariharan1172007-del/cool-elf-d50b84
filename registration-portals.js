@@ -3,7 +3,7 @@ const $=id=>document.getElementById(id);
 const api=async(path,body={})=>{
  const r=await fetch('/api/'+path,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body),cache:'no-store'});
  const t=await r.text();let j={};try{j=JSON.parse(t)}catch{}
- if(!r.ok||j.ok===false)throw Error(j.error||'Request failed');
+ if(!r.ok||j.ok===false){const detail=j.error||(t&&t.slice(0,300))||`HTTP ${r.status}`;throw Error(`${detail} [HTTP ${r.status}]`);}
  return j;
 };
 const ORDER=[
