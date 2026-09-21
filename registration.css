@@ -336,3 +336,6 @@ html,body{background:#f7f9ff;color:#15214d}
 .file-picker-label{display:block!important;margin-top:14px!important}
 .file-picker-label input{padding:11px!important;background:#fff!important;cursor:pointer}
 .file-picker-label span{display:block;margin-top:8px;padding:10px 12px;border-radius:9px;background:#f0f3fa;color:#5c6880;font:700 9px/1.3 Montserrat,sans-serif;word-break:break-word}
+
+/* Team confirmation + abstract portal cleanup */
+.success-team-members{margin:10px 0 6px}.success-team-members>span{display:block}.success-team-members>div{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:8px}.team-id-chip{display:inline-block;padding:7px 9px;border:1px solid rgba(255,70,80,.35);background:rgba(255,45,55,.07);border-radius:7px;color:#fff;font:800 8px Orbitron,sans-serif;letter-spacing:.08em}.success-card .success-label{display:block;font:800 8px Orbitron,sans-serif;letter-spacing:2px;color:#ff6971;margin-top:10px}.abstract-user{height:auto!important;min-height:0!important;box-sizing:border-box!important}.abstract-event-list{min-height:0!important}.abstract-shell{min-height:0!important}.abstract-page{height:auto!important;min-height:0!important}
