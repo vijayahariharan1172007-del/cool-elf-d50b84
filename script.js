@@ -94,7 +94,7 @@ function openPortal(){
   panel.classList.add('open');
   panel.setAttribute('aria-hidden','false');
 }
-enter.addEventListener('pointerdown',openPortal,{passive:true});
+enter.addEventListener('click',openPortal);
 close.addEventListener('click',()=>{panel.classList.remove('open');panel.setAttribute('aria-hidden','true')});
 panel.addEventListener('click',e=>{if(e.target===panel) close.click()});
 
