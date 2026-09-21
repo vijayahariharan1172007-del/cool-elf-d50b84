@@ -1,208 +1,151 @@
 (() => {
-  const $ = id => document.getElementById(id);
-  const api = async (path, body={}) => {
-    const r = await fetch('/api/'+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});
-    const j = await r.json().catch(()=>({}));
-    if(!r.ok || j.ok===false) throw Error(j.error || 'Request failed');
-    return j;
-  };
+const $=id=>document.getElementById(id);
+const api=async(path,body={})=>{
+ const r=await fetch('/api/'+path,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body),cache:'no-store'});
+ const t=await r.text();let j={};try{j=JSON.parse(t)}catch{}
+ if(!r.ok||j.ok===false)throw Error(j.error||'Request failed');
+ return j;
+};
+const ORDER=[
+ ['symposium-1','01','SYMPOSIUM 1'],['symposium-2','02','SYMPOSIUM 2'],
+ ['junior-quiz','03','JUNIOR QUIZ'],['senior-quiz','04','SENIOR QUIZ'],
+ ['meme','05','MEME & SLOGAN'],['poster-slogan','06','POSTER']
+];
+let events=[],current=null,auth=null;
 
-  const ORDER=[
-    ['symposium-1','01','SYMPOSIUM 1'],
-    ['symposium-2','02','SYMPOSIUM 2'],
-    ['junior-quiz','03','JUNIOR QUIZ'],
-    ['senior-quiz','04','SENIOR QUIZ'],
-    ['meme','05','MEME & SLOGAN'],
-    ['poster-slogan','06','POSTER']
-  ];
+const normalizeId=v=>{let s=String(v??'').normalize('NFKC').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');if(/^EX26\d{6}$/.test(s))s='EX26-'+s.slice(4);return s};
+const formatId=v=>{let s=String(v??'').toUpperCase().replace(/[^A-Z0-9-]/g,'').slice(0,11);if(/^EX26/.test(s)){let n=s.slice(4).replace(/\D/g,'').slice(0,6);return n?'EX26-'+n:'EX26'}return s};
+const phone=v=>String(v??'').replace(/\D/g,'').slice(-10);
+const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
-  let events=[], current=null, auth=null;
+function showSection(id){['identityGate','portalShell','paymentGate'].forEach(x=>$(x).hidden=x!==id);}
+function setFormStatus(msg){$('formStatus').textContent=msg||'';}
+function setGateStatus(msg){$('gateStatus').textContent=msg||'';}
 
-  const normalizeId=v=>{
-    const s=String(v??'').normalize('NFKC').toUpperCase().replace(/[^A-Z0-9]/g,'');
-    if(/^EX26\d{6}$/.test(s)) return 'EX26-'+s.slice(4);
-    return s;
-  };
-  const formatId=v=>{
-    let s=String(v??'').normalize('NFKC').toUpperCase().replace(/[^A-Z0-9]/g,'');
-    if(s.startsWith('EX26')) return 'EX26-'+s.slice(4).replace(/\D/g,'').slice(0,6);
-    return s.slice(0,11);
-  };
-  const phone=v=>String(v??'').replace(/\D/g,'').slice(-10);
-  const escapeHtml=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+async function boot(){
+ $('loaderStatus').textContent='VERIFYING PARTICIPANT';
+ try{
+  const saved=(()=>{try{return JSON.parse(localStorage.getItem('exc_portal_access')||'null')}catch{return null}})();
+  if(!saved?.accessToken||!saved?.master?.masterId){location.replace('already-registered.html');return;}
+  const checked=await api('user-access',{action:'validate_session',accessToken:saved.accessToken});
+  if(!checked.sessionValid){localStorage.removeItem('exc_portal_access');location.replace('already-registered.html');return;}
+  auth={accessToken:saved.accessToken,master:checked.master,sessionExpiresAt:Number(checked.sessionExpiresAt||saved.expiresAt||Date.now()+1800000)};
+  localStorage.setItem('exc_portal_access',JSON.stringify({accessToken:auth.accessToken,master:auth.master,expiresAt:auth.sessionExpiresAt}));
+  const state=await api('public-registration-state');
+  const map=new Map((state.events||[]).map(x=>[x.key,x]));
+  events=ORDER.map(([key,serial,title])=>{const p=map.get(key);return p?{...p,serial:String(p.serial||serial).padStart(2,'0'),displayTitle:title}:null}).filter(Boolean).filter(x=>x.enabled!==false);
+  if(!events.length)throw Error('NO EVENT REGISTRATION PORTALS ARE CURRENTLY AVAILABLE.');
+  renderEventChoices();showSection('identityGate');
+ }catch(e){$('loaderStatus').textContent=e.message||'Unable to load registration portals.';setTimeout(()=>location.replace('already-registered.html'),1800);}
+}
 
-  function show(view){
-    ['loadingView','eventsView','detailsView','paymentView'].forEach(id=>$(id).hidden=id!==view);
+function renderEventChoices(){
+ $('identityGrid').innerHTML=events.map(e=>{
+  const fee=Number(e.fee||0);
+  return '<div class="identity-card"><div class="choice-index">PORTAL '+esc(e.serial)+'</div><h3>'+esc(e.displayTitle||e.title)+'</h3><p>'+esc(e.description||'Register your verified Master ID for this event.')+'</p><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px"><span style="font:800 9px Orbitron;color:#d21e34">'+(fee?'₹'+fee:'FREE')+'</span><button class="portal-btn event-select" data-key="'+esc(e.key)+'" type="button">SELECT & CONTINUE →</button></div></div>';
+ }).join('');
+ document.querySelectorAll('.event-select').forEach(b=>b.addEventListener('click',()=>openEvent(b.dataset.key)));
+}
+
+function openEvent(key){
+ current=events.find(e=>e.key===key);if(!current)return;
+ $('portalSerial').textContent=current.serial||'01';
+ $('portalTitle').textContent=current.displayTitle||current.title;
+ $('portalSubtitle').textContent=current.team?'TEAM EVENT • MASTER ID VERIFICATION':'EVENT REGISTRATION • MASTER ID VERIFICATION';
+ $('portalDescription').textContent=current.description||'Enter your Master ID and registered mobile number to register for this event.';
+ $('masterId').value=auth.master.masterId||'';
+ $('mobile').value=phone(auth.master.phone||'');
+ $('teamFields').hidden=!current.team;
+ $('abstractInfo').hidden=current.requires_abstract!==true;
+ $('teamList').innerHTML='';
+ if(current.team)addMember();
+ setFormStatus('');
+ showSection('portalShell');
+ setTimeout(()=>$('masterId').focus(),50);
+}
+
+function addMember(){
+ const list=$('teamList');if(list.children.length>=5){setFormStatus('Maximum 5 additional team members allowed.');return;}
+ const n=list.children.length+1,row=document.createElement('div');row.className='team-member-row';
+ row.innerHTML='<div class="verify-head"><span>TEAM MEMBER '+n+'</span><b>MASTER ID + MOBILE</b></div><label>MASTER ID<input class="member-id" type="text" maxlength="11" placeholder="EX26-000000" autocomplete="off"></label><label>REGISTERED MOBILE NUMBER<input class="member-phone" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit registered mobile"></label><button class="portal-btn remove-member" type="button">REMOVE MEMBER</button>';
+ row.querySelector('.remove-member').onclick=()=>{row.remove();renumber();};list.appendChild(row);
+}
+function renumber(){[...document.querySelectorAll('.team-member-row')].forEach((r,i)=>r.querySelector('.verify-head span').textContent='TEAM MEMBER '+(i+1));}
+
+$('masterId').addEventListener('input',e=>e.target.value=formatId(e.target.value));
+$('mobile').addEventListener('input',e=>e.target.value=phone(e.target.value));
+$('addMember').addEventListener('click',addMember);
+$('backToEvents').addEventListener('click',()=>showSection('identityGate'));
+$('backToDetails').addEventListener('click',()=>showSection('portalShell'));
+
+$('registrationForm').addEventListener('submit',async e=>{
+ e.preventDefault();setFormStatus('VERIFYING MASTER ID AND REGISTERED MOBILE…');
+ const id=normalizeId($('masterId').value),ph=phone($('mobile').value);
+ $('masterId').value=id;$('mobile').value=ph;
+ if(!/^EX26-\d{6}$/.test(id))return setFormStatus('Enter a valid Master ID in the format EX26-XXXXXX.');
+ if(id!==normalizeId(auth.master.masterId)||ph!==phone(auth.master.phone))return setFormStatus('Master ID or registered mobile number does not match the verified participant.');
+ let team=[];
+ try{
+  if(current.team){
+   const rows=[...document.querySelectorAll('.team-member-row')];
+   if(!rows.length)throw Error('ADD AT LEAST ONE TEAM MEMBER.');
+   const seen=new Set([id]);
+   for(const row of rows){
+    const mid=normalizeId(row.querySelector('.member-id').value),mp=phone(row.querySelector('.member-phone').value);
+    if(!/^EX26-\d{6}$/.test(mid)||!/^\d{10}$/.test(mp))throw Error('Enter a valid Master ID and registered mobile for every team member.');
+    if(seen.has(mid))throw Error('Duplicate team member Master ID: '+mid);
+    seen.add(mid);
+    const vr=await api('verify-team-member',{masterId:mid,phone:mp});
+    team.push({masterId:vr.master.masterId,phone:vr.master.phone,name:vr.master.name,email:vr.master.email||'',year:vr.master.year||''});
+   }
   }
-  function message(el,text,type=''){
-    el.textContent=text||'';
-    el.className='message'+(type?' '+type:'');
-  }
+  current.verifiedTeam=team;
+  openPayment();
+ }catch(err){setFormStatus(err.message||'Unable to verify registration details.');}
+});
 
-  async function boot(){
-    show('loadingView');
-    $('loadingStatus').textContent='CONNECTING TO REGISTRATION SYSTEM…';
-    try{
-      const saved=(()=>{try{return JSON.parse(localStorage.getItem('exc_portal_access')||'null')}catch{return null}})();
-      if(!saved?.accessToken || !saved?.master?.masterId || Date.now()>=Number(saved.expiresAt||0)){
-        location.replace('already-registered.html'); return;
-      }
+function openPayment(){
+ const fee=Number(current.fee||0);
+ $('gateSerial').textContent='02';$('gateTitle').textContent=fee?'PAYMENT':'CONFIRM REGISTRATION';
+ $('gateType').textContent=current.displayTitle||current.title;
+ $('gateAmount').textContent=fee?'₹'+fee.toLocaleString('en-IN'):'FREE';
+ $('gateNote').textContent=fee?(current.note||'Pay using the QR code and enter the transaction reference.'):'This event is free. No payment is required.';
+ $('gatePaid').checked=false;$('gateUtr').value='';setGateStatus('');
+ $('paidCheckWrap').hidden=!fee;$('utrWrap').hidden=!fee;
+ const box=$('gateQr');box.replaceChildren();
+ if(!fee)box.textContent='NO PAYMENT REQUIRED';
+ else if(current.qr){const img=new Image();img.alt='Payment QR';img.src=current.qr;img.onload=()=>box.replaceChildren(img);img.onerror=()=>box.textContent='QR NOT AVAILABLE';}
+ else box.textContent='PAYMENT QR NOT CONFIGURED';
+ showSection('paymentGate');
+}
 
-      const checked=await api('user-access',{action:'validate_session',accessToken:saved.accessToken});
-      if(!checked?.sessionValid){localStorage.removeItem('exc_portal_access');location.replace('already-registered.html');return;}
-      auth={accessToken:saved.accessToken,master:checked.master,sessionExpiresAt:Number(checked.sessionExpiresAt)};
-      localStorage.setItem('exc_portal_access',JSON.stringify({accessToken:auth.accessToken,master:auth.master,expiresAt:auth.sessionExpiresAt}));
+$('continueToPortal').addEventListener('click',async()=>{
+ const fee=Number(current.fee||0),utr=$('gateUtr').value.trim();
+ if(fee&&!$('gatePaid').checked)return setGateStatus('CONFIRM PAYMENT FIRST');
+ if(fee&&!/^[A-Za-z0-9\-/]{6,40}$/.test(utr))return setGateStatus('ENTER A VALID 6–40 CHARACTER UTR / TRANSACTION REFERENCE');
+ const btn=$('continueToPortal');btn.disabled=true;setGateStatus('');$('creationOverlay').hidden=false;document.body.classList.add('creation-active');
+ const timer=setInterval(()=>{const s=$('creationStatus');if(s.textContent.includes('VERIFYING'))s.textContent='SECURING EVENT REGISTRATION…';else if(s.textContent.includes('SECURING'))s.textContent='SAVING MASTER ID TO EVENT…';else s.textContent='FINALISING EVENT REGISTRATION…'},1600);
+ try{
+  const r=await api('create-event-registration',{accessToken:auth.accessToken,masterId:auth.master.masterId,name:auth.master.name,phone:auth.master.phone,eventKey:current.key,utr:fee?utr:'',customFields:{},teamMembers:current.team?current.verifiedTeam||[]:[]});
+  clearInterval(timer);$('creationStatus').textContent='REGISTRATION CONFIRMED • READY';
+  $('successEvent').textContent=current.displayTitle||current.title;
+  $('registrationId').textContent=auth.master.masterId||'';
+  $('successMessage').textContent=(auth.master.masterId||'Your Master ID')+' has been successfully registered for '+(current.displayTitle||current.title)+'.';
+  $('abstractButton').hidden=current.requires_abstract!==true;
+  $('successOverlay').hidden=false;
+ }catch(err){clearInterval(timer);$('creationOverlay').hidden=true;document.body.classList.remove('creation-active');setGateStatus(err.message||'Unable to complete event registration.');btn.disabled=false;return;}
+ setTimeout(()=>{$('creationOverlay').hidden=true;document.body.classList.remove('creation-active');btn.disabled=false;},450);
+});
 
-      const state=await api('public-registration-state');
-      const map=new Map((state.events||[]).map(x=>[x.key,x]));
-      events=ORDER.map(([key,serial,label])=>{
-        const p=map.get(key);
-        return p?{...p,serial:String(p.serial||serial).padStart(2,'0'),displayTitle:label}:null;
-      }).filter(Boolean).filter(x=>x.enabled!==false);
+$('abstractButton').addEventListener('click',()=>location.href='abstract.html');
+$('closeSuccess').addEventListener('click',()=>{$('successOverlay').hidden=true;showSection('identityGate');});
 
-      if(!events.length) throw Error('NO EVENT REGISTRATION PORTALS ARE CURRENTLY AVAILABLE.');
-      renderEvents();
-      showEvents();
-    }catch(e){
-      $('loadingStatus').textContent=e.message||'Unable to load registration portals.';
-      $('loadingStatus').className='statusbar error';
-      setTimeout(()=>{ if(!auth) location.replace('already-registered.html'); },1800);
-    }
-  }
+const jarvisBtn=$('jarvisBtn'),panel=$('jarvisPanel'),jarvisClose=$('jarvisClose');
+const routes={HOME:'site.html',REGISTRATIONS:'registration-portals.html',PROFILE:'profile.html','GENERAL RULES':'general-rules.html',CONTACTS:'contact.html'};
+jarvisBtn.addEventListener('click',()=>{panel.classList.add('open');panel.setAttribute('aria-hidden','false')});
+jarvisClose.addEventListener('click',()=>{panel.classList.remove('open');panel.setAttribute('aria-hidden','true')});
+panel.addEventListener('click',e=>{if(e.target===panel)jarvisClose.click()});
+document.querySelectorAll('.jarvis-links button').forEach(b=>b.addEventListener('click',()=>{if(routes[b.dataset.target])location.href=routes[b.dataset.target]}));
 
-  function renderEvents(){
-    $('participantBox').innerHTML='<div><small>VERIFIED PARTICIPANT</small><strong>'+escapeHtml(auth.master.name||'PARTICIPANT')+'</strong><span>'+escapeHtml(auth.master.masterId||'')+'</span></div><div class="session-badge">SESSION ACTIVE</div>';
-    $('eventGrid').innerHTML=events.map(p=>{
-      const fee=Number(p.fee||0);
-      return '<button class="event-card" type="button" data-key="'+escapeHtml(p.key)+'"><span class="event-number">PORTAL '+escapeHtml(p.serial)+'</span><span class="event-title">'+escapeHtml(p.displayTitle||p.title)+'</span><span class="event-meta"><span>'+((p.team)?'TEAM EVENT':'INDIVIDUAL EVENT')+'</span>'+(p.requires_abstract===true?'<span>• SUBMISSION REQUIRED</span>':'')+'</span><strong class="event-fee">'+(fee?'₹'+fee:'FREE')+'</strong><span class="arrow">→</span></button>';
-    }).join('');
-    document.querySelectorAll('.event-card').forEach(b=>b.addEventListener('click',()=>openDetails(b.dataset.key)));
-  }
-
-  function showEvents(){
-    show('eventsView');
-  }
-
-  function openDetails(key){
-    current=events.find(x=>x.key===key);
-    if(!current) return;
-    $('detailsTitle').textContent=current.displayTitle||current.title;
-    $('detailsSubtitle').textContent=current.team?'TEAM EVENT • VERIFY EVERY TEAM MEMBER':'INDIVIDUAL EVENT • RE-VERIFY YOUR DETAILS';
-    $('detailsFee').textContent=Number(current.fee||0)?'₹'+current.fee:'FREE';
-    $('mainMasterId').value=auth.master.masterId||'';
-    $('mainMobile').value=phone(auth.master.phone||'');
-    $('detailsMessage').textContent='';
-    $('teamList').innerHTML='';
-    $('teamSection').hidden=!current.team;
-    $('abstractSection').hidden=current.requires_abstract!==true;
-    if(current.team) addMember();
-    show('detailsView');
-  }
-
-  function addMember(){
-    const list=$('teamList');
-    if(list.children.length>=5){message($('detailsMessage'),'MAXIMUM 5 ADDITIONAL TEAM MEMBERS');return;}
-    const n=list.children.length+1;
-    const row=document.createElement('div');
-    row.className='team-row';
-    row.innerHTML='<div class="team-head"><span>TEAM MEMBER '+n+'</span><button class="remove" type="button">REMOVE</button></div><div class="fields"><label>MASTER ID<input class="member-id" maxlength="11" placeholder="EX26-000000" autocomplete="off"></label><label>REGISTERED MOBILE<input class="member-phone" maxlength="10" inputmode="numeric" placeholder="10-digit mobile"></label></div>';
-    row.querySelector('.remove').onclick=()=>{row.remove();renumber();};
-    list.appendChild(row);
-  }
-  function renumber(){[...document.querySelectorAll('.team-row')].forEach((r,i)=>r.querySelector('.team-head span').textContent='TEAM MEMBER '+(i+1));}
-
-  $('mainMasterId').addEventListener('input',e=>e.target.value=formatId(e.target.value));
-  $('mainMobile').addEventListener('input',e=>e.target.value=phone(e.target.value));
-  $('addMember').onclick=()=>{message($('detailsMessage'),'');addMember();};
-  $('backEvents').onclick=showEvents;
-  $('cancelDetails').onclick=showEvents;
-
-  $('continueDetails').onclick=async()=>{
-    const btn=$('continueDetails');btn.disabled=true;message($('detailsMessage'),'VERIFYING PARTICIPANT DETAILS…');
-    try{
-      const id=normalizeId($('mainMasterId').value), ph=phone($('mainMobile').value);
-      if(id!==normalizeId(auth.master.masterId)||ph!==phone(auth.master.phone)) throw Error('Master ID or registered mobile number does not match the verified participant.');
-      let team=[];
-      if(current.team){
-        const rows=[...document.querySelectorAll('.team-row')];
-        if(!rows.length) throw Error('ADD AT LEAST ONE TEAM MEMBER.');
-        const seen=new Set([id]);
-        for(const row of rows){
-          const mid=normalizeId(row.querySelector('.member-id').value), mp=phone(row.querySelector('.member-phone').value);
-          if(!/^EX26-\d{6}$/.test(mid)||!/^\d{10}$/.test(mp)) throw Error('ENTER A VALID MASTER ID AND MOBILE FOR EVERY TEAM MEMBER.');
-          if(seen.has(mid)) throw Error('DUPLICATE TEAM MEMBER: '+mid);
-          seen.add(mid);
-          const vr=await api('verify-team-member',{masterId:mid,phone:mp});
-          team.push({masterId:vr.master.masterId,phone:vr.master.phone,name:vr.master.name,email:vr.master.email||'',year:vr.master.year||''});
-        }
-      }
-      current.verifiedTeam=team;
-      openPayment();
-    }catch(e){message($('detailsMessage'),e.message||'Unable to verify details.');}
-    finally{btn.disabled=false;}
-  };
-
-  function openPayment(){
-    const fee=Number(current.fee||0);
-    $('paymentTitle').textContent=fee?'PAYMENT':'FINAL CONFIRMATION';
-    $('paymentFee').textContent=fee?'₹'+fee:'FREE';
-    $('paymentAmount').textContent=fee?'₹'+fee:'NO PAYMENT REQUIRED';
-    $('paymentNote').textContent=fee?(current.note||'Pay using the QR code. Enter the exact UTR / transaction reference before confirming.'):'This event is free. No payment or UTR is required.';
-    $('utr').value='';
-    $('utr').parentElement.hidden=!fee;
-    $('paymentMessage').textContent='';
-    const box=$('qrBox');box.innerHTML='';
-    if(!fee){box.innerHTML='<div style="color:#16884d;font:800 10px Orbitron;text-align:center">FREE EVENT<br><br>NO PAYMENT REQUIRED</div>';}
-    else if(current.qr){
-      const img=document.createElement('img');img.src=current.qr;img.alt='Payment QR code';img.onload=()=>box.replaceChildren(img);img.onerror=()=>box.innerHTML='<div class="qr-missing">PAYMENT QR COULD NOT BE LOADED.</div>';
-    }else box.innerHTML='<div class="qr-missing">PAYMENT QR NOT CONFIGURED.</div>';
-    show('paymentView');
-  }
-
-  $('backDetails').onclick=()=>show('detailsView');
-  $('cancelPayment').onclick=()=>show('detailsView');
-
-  $('confirm').onclick=async()=>{
-    const fee=Number(current.fee||0), utr=$('utr').value.trim();
-    if(fee && !/^[A-Za-z0-9\-/]{6,40}$/.test(utr)){message($('paymentMessage'),'ENTER A VALID 6–40 CHARACTER UTR / TRANSACTION REFERENCE.');return;}
-    const btn=$('confirm');btn.disabled=true;message($('paymentMessage'),'CREATING YOUR REGISTRATION…');
-    try{
-      const r=await api('create-event-registration',{
-        accessToken:auth.accessToken,
-        masterId:auth.master.masterId,
-        name:auth.master.name,
-        phone:auth.master.phone,
-        eventKey:current.key,
-        utr:fee?utr:'',
-        customFields:{},
-        teamMembers:current.team?current.verifiedTeam||[]:[]
-      });
-      $('successEvent').textContent=current.displayTitle||current.title;
-      $('passName').textContent=auth.master.name||'PARTICIPANT';
-      $('passId').textContent=auth.master.masterId||'';
-      $('passMobile').textContent=auth.master.phone||'';
-      $('registrationId').textContent='ID • '+(r.eventId||'SUBMITTED');
-      const abstractRequired=current.requires_abstract===true;
-      $('successNote').textContent=abstractRequired?'REGISTRATION CREATED • ABSTRACT SUBMISSION IS REQUIRED TO COMPLETE THIS EVENT.':'REGISTRATION SUCCESSFUL • DETAILS SAVED.';
-      $('abstractButton').hidden=!abstractRequired;
-      $('successView').hidden=false;
-      if(window.QRCode){$('qrcode').innerHTML='';new QRCode($('qrcode'),{text:r.eventId||auth.master.masterId,width:78,height:78});}
-    }catch(e){message($('paymentMessage'),e.message||'Unable to complete registration.');}
-    finally{btn.disabled=false;}
-  };
-
-  $('abstractButton').onclick=()=>location.href='abstract.html';
-  $('printPass').onclick=()=>window.print();
-  $('returnEvents').onclick=()=>{$('successView').hidden=true;showEvents();};
-
-  const jarvis=$('jarvisBtn'),panel=$('jarvisPanel'),close=$('jarvisClose');
-  const routes={HOME:'site.html',REGISTRATIONS:'registration-portals.html',PROFILE:'profile.html','GENERAL RULES':'general-rules.html',CONTACTS:'contact.html'};
-  function openJarvis(){panel.classList.add('open');panel.setAttribute('aria-hidden','false');}
-  function closeJarvis(){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');}
-  jarvis.onclick=openJarvis;close.onclick=closeJarvis;
-  panel.addEventListener('click',e=>{if(e.target===panel)closeJarvis();});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeJarvis();});
-  document.querySelectorAll('.jarvis-links button').forEach(b=>b.onclick=()=>{const target=routes[b.dataset.target];if(target)location.href=target;});
-
-  boot();
+boot();
 })();
