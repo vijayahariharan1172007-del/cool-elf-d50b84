@@ -37,6 +37,7 @@
     <div class="verify-block">
       <div class="verify-head"><span>MASTER ID</span><b>PARTICIPANT IDENTITY</b></div>
       <label>MASTER ID<input id="masterId" name="masterId" type="text" placeholder="EX26-000000" maxlength="11" autocomplete="off" required></label>
+      <label>REGISTERED GMAIL<input id="registeredEmail" name="registeredEmail" type="email" placeholder="yourname@gmail.com" autocomplete="email" required></label>
       <span class="field-status">Enter the Master ID created during pre-registration.</span>
     </div>
     <div class="verify-block">
@@ -80,9 +81,10 @@
     <div id="successTeamMembers" class="success-team-members" hidden><span class="success-label">REGISTERED MASTER IDs</span><div id="successTeamIds"></div></div>
     <span class="success-label" id="successMasterLabel">MASTER ID</span><h2 id="registrationId">EX26-000000</h2>
     <p class="master-code-note" id="successMessage">Your Master ID has been successfully registered for this event.</p>
-    <div class="success-actions"><button id="abstractButton" hidden type="button">OPEN ABSTRACT SUBMISSION →</button><button id="closeSuccess" type="button">BACK TO EVENT PORTAL →</button></div>
+    <div class="success-actions"><button id="abstractButton" hidden type="button">OPEN ABSTRACT SUBMISSION →</button><button id="downloadEventCard" type="button">DOWNLOAD EVENT REGISTRATION CARD</button><button id="closeSuccess" type="button">BACK TO EVENT PORTAL →</button></div>
   </div>
 </div>
+<div class="identity-error-overlay" id="identityErrorOverlay" hidden aria-live="assertive"><div class="identity-error-card"><div class="identity-error-icon">!</div><strong>IDENTITY VERIFICATION FAILED</strong><span id="identityErrorText">The Master ID, Gmail or mobile number does not match.</span></div></div>
 
 <div class="jarvis-panel" id="jarvisPanel" aria-hidden="true"><div class="jarvis-hud" role="dialog" aria-label="J.A.R.V.I.S. command interface">
 <header class="jarvis-hud-header"><div class="jarvis-brand"><strong>J A R V I S</strong><span>YOUR EVENT ASSISTANT</span><i class="jarvis-header-line"></i></div><div class="jarvis-header-meta"><b>NAVIGATE</b> • EXPLORE • ACHIEVE</div></header>
@@ -93,5 +95,5 @@
 </div></div>
 
 <script src="page-loader.js"></script>
-<script src="registration-portals.js?v=27"></script>
+<script src="registration-portals.js?v=28"></script>
 <script src="action-loader.js?v=1"></script></body></html>
