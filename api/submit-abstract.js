@@ -44,8 +44,17 @@ module.exports=async(req,res)=>{
 
     const eventKey=String(b.eventKey||'').trim();
     if(!eventKey)return fail(res,400,'Event is required');
-    const reg=eligible.find(r=>String(r.event_key)===eventKey);
+    const reg=eligible.find(r=>String(r.event_key).toLowerCase()===eventKey.toLowerCase());
     if(!reg)return fail(res,403,'You are not registered for an event that requires a submission');
+    const teamId=reg.team_id||null;
+    let teamMasterIds=[id];
+    if(teamId){
+      const teamMembers=Array.isArray(reg.team_members)?reg.team_members:[];
+      for(const member of teamMembers){
+        const mid=String(member?.masterId||'').trim().toUpperCase();
+        if(mid&&!teamMasterIds.includes(mid))teamMasterIds.push(mid);
+      }
+    }
 
     const existing=await supabase.from('abstract_submissions').select('id,status').eq('event_registration_id',reg.id).maybeSingle();
     if(existing.error)throw existing.error;
@@ -74,12 +83,12 @@ module.exports=async(req,res)=>{
       if(!filePath||!fileName)return fail(res,400,'Submission file is required');
       if(!filePath.startsWith(`${id}/${reg.event_key}/`))return fail(res,403,'Invalid submission file path');
       if(fileSize<=0||fileSize>10*1024*1024)return fail(res,400,'File must be 10 MB or smaller');
-      const ins=await supabase.from('abstract_submissions').insert({event_registration_id:reg.id,master_id:id,event_key:reg.event_key,event_title:reg.event,title:fileName,abstract_text:'FILE SUBMISSION',file_path:filePath,file_name:fileName,file_size:fileSize,file_type:fileType,status:'submitted',submitted_at:new Date().toISOString()}).select('id').maybeSingle();
+      const ins=await supabase.from('abstract_submissions').insert({event_registration_id:reg.id,master_id:id,event_key:reg.event_key,event_title:reg.event,title:fileName,abstract_text:'FILE SUBMISSION',team_id:teamId,team_master_ids:teamMasterIds,file_path:filePath,file_name:fileName,file_size:fileSize,file_type:fileType,status:'submitted',submitted_at:new Date().toISOString()}).select('id').maybeSingle();
       if(ins.error){if(ins.error.code==='23505')return fail(res,409,'A submission has already been received for this event');throw ins.error;}
       const upd=await supabase.from('event_registrations').update({status:'pending'}).eq('id',reg.id).eq('status','awaiting_abstract');
       if(upd.error)throw upd.error;
       return ok(res,{ok:true,id:ins.data?.id,status:'submitted',registrationStatus:'pending'});
     }
     return fail(res,400,'Invalid action');
-  }catch(e){console.error(e);return fail(res,500,'Unable to process submission');}
+  }catch(e){console.error(e);return fail(res,500,`Unable to process submission: ${e?.message||'Unknown server error'}`);}
 };
