@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Profile Verification | EXCELSIOR'26</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Orbitron:wght@500;600;700;800&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="registration.css"><link rel="stylesheet" href="portal-theme.css"><link rel="stylesheet" href="navigation.css"><link rel="stylesheet" href="jarvis-hud.css"><link rel="stylesheet" href="profile.css">
+<link rel="stylesheet" href="registration.css"><link rel="stylesheet" href="portal-theme.css"><link rel="stylesheet" href="navigation.css"><link rel="stylesheet" href="jarvis-hud.css"><link rel="stylesheet" href="profile.css"><link rel="stylesheet" href="profile-flow.css">
 </head><body class="portal-ref-body profile-verify-body">
 <div class="red-atmosphere"></div><div class="vignette"></div>
 <button class="jarvis-orb registration-jarvis-orb" id="jarvisBtn" type="button" aria-label="Open JARVIS menu"><span class="jarvis-ring ring-a"></span><span class="jarvis-ring ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S." class="jarvis-image"><span class="jarvis-scan"></span><span class="jarvis-label">J.A.R.V.I.S.</span></button>
@@ -11,7 +11,7 @@
 <div class="verify-badge">01 // PROFILE ACCESS</div>
 <div class="reg-heading"><p>EXCELSIOR'26</p><h2>PROFILE</h2><span>VERIFY TO OPEN YOUR PARTICIPANT PROFILE</span></div>
 <p class="participant-help">This is a separate profile verification. It does not start event registration.</p>
-<label>MASTER ID<input id="profileVerifyMaster" type="text" placeholder="EX26-000000" maxlength="10" autocomplete="off"></label>
+<label>MASTER ID<input id="profileVerifyMaster" type="text" placeholder="EX26-000000" maxlength="11" autocomplete="off"></label>
 <label>REGISTERED MOBILE NUMBER<input id="profileVerifyMobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number" autocomplete="tel"></label>
 <button class="continue-btn" id="profileVerifyBtn" type="button">VERIFY &amp; OPEN PROFILE <b>→</b></button>
 <p class="gate-status" id="profileVerifyStatus" role="status"></p>
