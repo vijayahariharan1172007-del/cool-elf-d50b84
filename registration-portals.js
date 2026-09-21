@@ -200,7 +200,7 @@ $('abstractButton').addEventListener('click',()=>location.href='abstract.html');
 $('closeSuccess').addEventListener('click',()=>{$('successOverlay').hidden=true;showSection('identityGate')});
 
 const jarvisBtn=$('jarvisBtn'),panel=$('jarvisPanel'),jarvisClose=$('jarvisClose');
-const routes={HOME:'site.html',REGISTRATIONS:'registration-portals.html',PROFILE:'profile.html','GENERAL RULES':'general-rules.html',CONTACTS:'contact.html'};
+const routes={HOME:'site.html',REGISTRATIONS:'registration-portals.html',PROFILE:'profile.html','BROCHURE':'general-rules.html',CONTACTS:'contact.html'};
 jarvisBtn.addEventListener('click',()=>{panel.classList.add('open');panel.setAttribute('aria-hidden','false')});
 jarvisClose.addEventListener('click',()=>{panel.classList.remove('open');panel.setAttribute('aria-hidden','true')});
 panel.addEventListener('click',e=>{if(e.target===panel)jarvisClose.click()});
