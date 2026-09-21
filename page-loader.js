@@ -21,14 +21,14 @@
     if(document.readyState==='complete') resolve();
     else window.addEventListener('load',resolve,{once:true});
   });
-  const safety=new Promise(resolve=>setTimeout(resolve,1200));
+  const safety=new Promise(resolve=>setTimeout(resolve,650));
   Promise.race([
     Promise.all([waitReady,waitFonts,waitApp,...critical.map(waitImage)]),
     safety
   ]).then(()=>{
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
       loader.classList.add('hidden');
       loader.setAttribute('aria-hidden','true');
-    }));
+    });
   });
 })();
