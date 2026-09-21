@@ -55,4 +55,4 @@ module.exports=async(req,res)=>{try{
  }
  const finalStatus=p.data.requires_abstract===true?'awaiting_abstract':'pending';
  return ok(res,{ok:true,eventId,status:finalStatus,cardReady:false,teamId:p.data.team?eventId:null,registrationDbId:createdId,abstractEligible:p.data.requires_abstract===true});
-}catch(e){console.error(e);return fail(res,500,'Unable to create event registration')}};
+}catch(e){console.error(e);return fail(res,500,`Unable to create event registration: ${e?.message||'Unknown server error'}`)}};
