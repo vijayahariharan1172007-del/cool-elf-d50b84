@@ -1,0 +1,131 @@
+/* Profile verification flow — layout and interaction fixes */
+.profile-verify-page{
+  min-height:100svh;
+  display:grid;
+  place-items:start center;
+  padding:54px 24px 70px;
+  position:relative;
+  z-index:5;
+}
+.profile-verify-page > .portal-back{
+  margin:0 auto 120px;
+}
+.profile-verify-card{
+  width:min(840px,calc(100vw - 48px)) !important;
+  max-width:840px !important;
+  margin:0 auto !important;
+  padding:42px 42px 34px !important;
+  border-radius:28px !important;
+}
+.profile-verify-card .verify-badge{
+  margin:0 0 18px;
+  color:#152b68;
+  font:800 14px/1 Orbitron,sans-serif;
+  letter-spacing:.04em;
+}
+.profile-verify-card .reg-heading{
+  margin:0 0 22px;
+  text-align:center;
+}
+.profile-verify-card .reg-heading p{
+  margin:0 0 12px;
+  color:#5e6c91;
+  font:800 10px/1 Orbitron,sans-serif;
+  letter-spacing:.22em;
+}
+.profile-verify-card .reg-heading h2{
+  margin:0;
+  color:#173fbe;
+  font:900 clamp(3.1rem,7vw,4.8rem)/.9 Cinzel,serif;
+  letter-spacing:.01em;
+}
+.profile-verify-card .reg-heading span{
+  display:block;
+  margin-top:16px;
+  color:#ff6973;
+  font:800 9px/1 Orbitron,sans-serif;
+  letter-spacing:.17em;
+}
+.profile-verify-card .participant-help{
+  max-width:720px;
+  margin:0 auto 28px;
+  color:#5d6a88;
+  font:600 clamp(14px,1.7vw,18px)/1.45 Montserrat,sans-serif;
+  text-align:left;
+}
+.profile-verify-card > label{
+  display:block !important;
+  width:100%;
+  margin:0 0 18px !important;
+  color:#294287 !important;
+  font:800 10px/1.2 Orbitron,sans-serif !important;
+  letter-spacing:.04em;
+}
+.profile-verify-card > label + label{
+  margin-top:2px !important;
+}
+.profile-verify-card > label input{
+  display:block !important;
+  width:100% !important;
+  height:52px;
+  margin:8px 0 0 !important;
+  padding:0 16px !important;
+  border:1px solid #b8c6e8 !important;
+  border-radius:12px !important;
+  background:#fff !important;
+  color:#17244d !important;
+  outline:none;
+  font:700 14px/1.2 Montserrat,sans-serif !important;
+  letter-spacing:.03em;
+}
+.profile-verify-card > label input:focus{
+  border-color:#4e74d8 !important;
+  box-shadow:0 0 0 3px rgba(35,83,195,.10) !important;
+}
+.profile-verify-card .continue-btn{
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  width:100%;
+  min-height:58px;
+  margin-top:12px;
+  border:0 !important;
+  border-radius:13px !important;
+  background:linear-gradient(110deg,#183fc1,#176ee6) !important;
+  color:#fff !important;
+  box-shadow:0 12px 26px rgba(24,78,205,.24) !important;
+  font:900 12px/1 Orbitron,sans-serif !important;
+  letter-spacing:.04em;
+}
+.profile-verify-card .continue-btn b{
+  margin-left:auto;
+  font-size:20px;
+  font-weight:700;
+}
+.profile-verify-card .gate-status{
+  min-height:20px;
+  margin:14px 0 0;
+  text-align:center;
+  color:#c91d32 !important;
+  font:800 9px/1.4 Orbitron,sans-serif !important;
+  letter-spacing:.05em;
+}
+@media(max-width:700px){
+  .profile-verify-page{padding:22px 14px 50px}
+  .profile-verify-page > .portal-back{margin-bottom:74px}
+  .profile-verify-card{
+    width:min(100%,680px) !important;
+    padding:28px 20px 24px !important;
+    border-radius:22px !important;
+  }
+  .profile-verify-card .verify-badge{font-size:11px}
+  .profile-verify-card .participant-help{font-size:13px;margin-bottom:22px}
+  .profile-verify-card > label input{height:50px}
+}
+@media(max-width:420px){
+  .profile-verify-page > .portal-back{margin-bottom:58px}
+  .profile-verify-card{padding:24px 16px 20px !important}
+  .profile-verify-card .reg-heading h2{font-size:3rem}
+  .profile-verify-card .reg-heading span{font-size:7px;letter-spacing:.12em}
+}

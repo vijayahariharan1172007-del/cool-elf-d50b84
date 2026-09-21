@@ -54,5 +54,5 @@ module.exports=async(req,res)=>{try{
    if(error){if(error.code==='23505')return fail(res,409,'You are already registered for this event');throw error}createdId=ins?.id;if(!createdId)return fail(res,500,'Registration was created without an ID');
  }
  const finalStatus=p.data.requires_abstract===true?'awaiting_abstract':'pending';
- return ok(res,{ok:true,eventId,status:finalStatus,cardReady:false,teamId:p.data.team?eventId:null,registrationDbId:createdId,abstractEligible:p.data.requires_abstract===true});
-}catch(e){console.error(e);return fail(res,500,'Unable to create event registration')}};
+ return ok(res,{ok:true,eventId,status:finalStatus,cardReady:false,registrationDbId:createdId,abstractEligible:p.data.requires_abstract===true});
+}catch(e){console.error(e);return fail(res,500,`Unable to create event registration: ${e?.message||'Unknown server error'}`)}};
