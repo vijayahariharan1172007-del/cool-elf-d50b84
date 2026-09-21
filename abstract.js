@@ -1,6 +1,6 @@
 (() => {
  const $=id=>document.getElementById(id);
- let auth=null,current=null;
+ let auth=null,current=null,currentEventKey='';
  const accessKey='exc_portal_access';
  const readSession=()=>{try{return JSON.parse(localStorage.getItem(accessKey)||'null')}catch{return null}};
  const saveSession=(r)=>{
@@ -66,9 +66,15 @@
    }catch(e){status.textContent=e.message;$('verifyAbstract').disabled=false;}
  };
  function openEditor(e){
+   if(!e||!e.eventKey){
+     $('abstractStatus').textContent='Unable to identify the selected event. Please go back and select the event again.';
+     return;
+   }
    current=e;
+   currentEventKey=String(e.eventKey);
+   $('abstractEditor').dataset.eventKey=currentEventKey;
    $('abstractEventList').hidden=true;$('abstractEditor').hidden=false;
-   $('editorEventTitle').textContent=e.eventTitle||'SUBMISSION';
+   $('editorEventTitle').textContent=e.eventTitle||currentEventKey.toUpperCase();
    $('abstractStatus').textContent=e.submitted?'A submission has already been received for this event.':'SELECT THE FILE YOU WANT TO SUBMIT.';
    $('submissionFile').value='';$('submissionFileName').textContent='NO FILE SELECTED';
    const disabled=!!e.submitted;
@@ -78,7 +84,7 @@
    const f=$('submissionFile').files?.[0];
    $('submissionFileName').textContent=f?`${f.name} • ${(f.size/1024/1024).toFixed(2)} MB`:'NO FILE SELECTED';
  };
- $('abstractBack').onclick=()=>{$('abstractEditor').hidden=true;$('abstractEventList').hidden=false;$('abstractStatus').textContent='';};
+ $('abstractBack').onclick=()=>{$('abstractEditor').hidden=true;$('abstractEventList').hidden=false;$('abstractStatus').textContent='';current=null;currentEventKey='';};
  $('submitAbstract').onclick=async()=>{
    const file=$('submissionFile').files?.[0];
    if(!file)return $('abstractStatus').textContent='CHOOSE YOUR ABSTRACT FILE FIRST.';
@@ -88,11 +94,13 @@
    if(file.size>10*1024*1024)return $('abstractStatus').textContent='FILE MUST BE 10 MB OR SMALLER.';
    $('submitAbstract').disabled=true;$('abstractStatus').textContent='PREPARING SECURE UPLOAD…';
    try{
-     const u=await api({action:'upload-url',accessToken:auth.accessToken,masterId:auth.master.masterId,eventKey:current.eventKey,fileName:file.name,fileType:file.type||'application/octet-stream',fileSize:file.size});
+     const eventKey=currentEventKey||$('abstractEditor').dataset.eventKey||'';
+     if(!eventKey)throw Error('No event selected. Please go back and select the event again.');
+     const u=await api({action:'upload-url',accessToken:auth.accessToken,masterId:auth.master.masterId,eventKey,fileName:file.name,fileType:file.type||'application/octet-stream',fileSize:file.size});
      $('abstractStatus').textContent='UPLOADING FILE…';
      const up=await fetch(u.signedUrl,{method:'PUT',headers:{'content-type':file.type||'application/octet-stream','x-upsert':'false','cache-control':'3600'},body:file});
      if(!up.ok){const detail=await up.text().catch(()=> '');throw Error(detail||'FILE UPLOAD FAILED');}
-     await api({action:'submit',accessToken:auth.accessToken,masterId:auth.master.masterId,eventKey:current.eventKey,filePath:u.path,fileName:file.name,fileType:file.type||'application/octet-stream',fileSize:file.size});
+     await api({action:'submit',accessToken:auth.accessToken,masterId:auth.master.masterId,eventKey,filePath:u.path,fileName:file.name,fileType:file.type||'application/octet-stream',fileSize:file.size});
      current.submitted=true;$('abstractStatus').textContent='FILE UPLOADED • SUBMISSION RECEIVED • AWAITING REVIEW.';$('submissionFile').value='';$('submissionFileName').textContent='SUBMISSION RECEIVED';
    }catch(e){$('abstractStatus').textContent=e.message||'Unable to submit file.';$('submitAbstract').disabled=false;}
  };
