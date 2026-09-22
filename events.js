@@ -121,7 +121,7 @@ function closeJarvis() { panel.classList.remove('open'); panel.setAttribute('ari
 jarvis.addEventListener('click', openJarvis);
 close.addEventListener('click', closeJarvis);
 panel.addEventListener('click', e => { if (e.target === panel) closeJarvis(); });
-const routes = { 'HOME':'site.html', 'EVENTS':'events.html', 'BROCHURE':'general-rules.html', 'REGISTRATIONS':'registration.html', 'PROFILE':'profile.html', 'CONTACTS':'contact.html' };
+const routes = { 'HOME':'site.html', 'EVENTS':'events.html', 'BROCHURE':'general-rules.html', 'REGISTRATIONS':'already-registered.html?return=registration-portals.html', 'PROFILE':'profile.html', 'CONTACTS':'contact.html' };
 document.querySelectorAll('.jarvis-links button').forEach(btn => btn.addEventListener('click', () => {
   const target = btn.dataset.target;
   if (target === 'EVENTS') { closeJarvis(); window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
