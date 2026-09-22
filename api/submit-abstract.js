@@ -65,9 +65,12 @@ module.exports=async(req,res)=>{
       const fileName=String(b.fileName||'').trim();
       const fileType=String(b.fileType||'').trim().toLowerCase();
       const fileSize=Number(b.fileSize||0);
-      const allowedTypes=new Set(['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
       const ext=(fileName.split('.').pop()||'').toLowerCase();
-      if(!['pdf','doc','docx'].includes(ext)||!allowedTypes.has(fileType))return fail(res,400,'Only PDF, DOC or DOCX files are allowed');
+      const eventText=(String(reg.event_key||'')+' '+String(reg.event||'')).toLowerCase();
+      const jpegEvent=eventText.includes('poster')||eventText.includes('meme')||eventText.includes('slogan');
+      const allowedTypes=jpegEvent ? new Set(['image/jpeg']) : new Set(['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document']);
+      const allowedExts=jpegEvent ? ['jpg','jpeg'] : ['pdf','doc','docx'];
+      if(!allowedExts.includes(ext)||!allowedTypes.has(fileType))return fail(res,400,jpegEvent?'Only JPEG files are allowed for this event':'Only PDF, DOC or DOCX files are allowed');
       if(!Number.isFinite(fileSize)||fileSize<=0||fileSize>10*1024*1024)return fail(res,400,'File must be 10 MB or smaller');
       const safeName=fileName.replace(/[^a-zA-Z0-9._-]/g,'_').slice(-140);
       const path=`${id}/${reg.event_key}/${Date.now()}-${safeName}`;
