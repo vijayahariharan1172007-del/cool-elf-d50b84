@@ -48,11 +48,37 @@ async function validateExistingSession(){
  }
 }
 
+let sessionWatchTimer=null;
+
+function startSessionWatch(){
+ if(sessionWatchTimer)clearInterval(sessionWatchTimer);
+ sessionWatchTimer=setInterval(async()=>{
+  const valid=await validateExistingSession();
+  if(!valid){
+   clearInterval(sessionWatchTimer);
+   sessionWatchTimer=null;
+   alert('Your Master ID verification session has expired. Please verify again to continue.');
+   window.location.replace('already-registered.html?return=registration-portals.html');
+  }
+ },15000);
+}
+
 async function boot(){
- renderEventChoices();
  showSection('identityGate');
+ $('loaderStatus').textContent='VERIFYING PARTICIPANT ACCESS…';
+
+ // HARD GATE: this page must never expose the six event portals without
+ // a currently valid server-issued Master ID access session.
+ const sessionValid=await validateExistingSession();
+ if(!sessionValid){
+  localStorage.removeItem('exc_portal_access');
+  $('loaderStatus').textContent='VERIFICATION REQUIRED';
+  window.location.replace('already-registered.html?return=registration-portals.html');
+  return;
+ }
+
+ renderEventChoices();
  $('loaderStatus').textContent='SELECT EVENT TO CONTINUE';
- await validateExistingSession();
  try{
   const state=await api('public-registration-state');
   const map=new Map((state.events||[]).map(x=>[x.key,x]));
@@ -63,6 +89,7 @@ async function boot(){
   if(live.length) events=live;
   renderEventChoices();
   $('loaderStatus').textContent='SELECT EVENT TO CONTINUE';
+  startSessionWatch();
  }catch(e){
   // Keep the six known portals usable even if the public-state endpoint is temporarily unavailable.
   $('loaderStatus').textContent='SELECT EVENT TO CONTINUE';
