@@ -94,6 +94,167 @@
     .excelsior-home .excelsior-access{width:90vw!important;height:88px!important}
     .excelsior-home .access-copy strong{font-size:clamp(1rem,5vw,1.5rem)!important}
   }
+</style><style>
+/* EXCELSIOR HOME — clean cinematic command deck */
+.site-bg{
+  background:#020806!important;
+  background-image:
+    radial-gradient(circle at 50% 28%,rgba(20,255,105,.10),transparent 26%),
+    radial-gradient(circle at 12% 70%,rgba(0,255,110,.07),transparent 28%),
+    radial-gradient(circle at 88% 65%,rgba(0,255,110,.06),transparent 28%)!important;
+  filter:none!important;
+}
+.site-bg::before{
+  content:""!important;
+  position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(115deg,transparent 0 90px,rgba(90,255,140,.018) 91px 92px),
+    radial-gradient(ellipse at 50% 50%,transparent 35%,rgba(0,0,0,.65) 100%);
+}
+.home-title h1{
+  position:relative;
+  color:#ecfff0!important;
+  text-shadow:
+    0 0 5px rgba(91,255,130,.95),
+    0 0 18px rgba(37,255,104,.7),
+    0 0 42px rgba(37,255,104,.34),
+    0 3px 5px #000!important;
+  animation:excelsiorPulse 3.2s ease-in-out infinite;
+}
+.home-title h1::after{
+  content:"";
+  position:absolute;left:8%;right:8%;bottom:-13px;height:2px;
+  background:linear-gradient(90deg,transparent,#61ff8b,transparent);
+  box-shadow:0 0 14px #35ff70;
+  animation:scanLine 2.8s linear infinite;
+}
+.home-title p{
+  text-shadow:0 0 9px rgba(68,255,119,.75)!important;
+}
+.portal-panel{
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  backdrop-filter:none!important;
+  width:min(96vw,900px)!important;
+  top:29%!important;
+}
+.portal-command{
+  position:relative!important;
+  width:100%!important;
+  max-width:none!important;
+  padding:28px 18px 24px!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  overflow:visible!important;
+}
+.portal-atmosphere,.portal-topline,.command-tech-field,.portal-command-status{display:none!important}
+.command-stage{position:relative!important}
+.command-nodes{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:14px!important;
+  max-width:820px!important;
+  margin:0 auto!important;
+}
+.command-node{
+  position:relative!important;
+  height:78px!important;
+  min-height:78px!important;
+  padding:0 22px 0 78px!important;
+  overflow:hidden!important;
+  background:linear-gradient(100deg,rgba(4,22,13,.72),rgba(2,10,7,.42))!important;
+  border:1px solid rgba(102,255,143,.28)!important;
+  border-radius:12px!important;
+  box-shadow:inset 0 0 22px rgba(49,255,105,.055),0 0 0 rgba(49,255,105,0)!important;
+  transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease,background .28s ease!important;
+}
+.command-node::before{
+  content:"";
+  position:absolute;left:-45%;top:0;width:35%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(96,255,139,.20),transparent);
+  transform:skewX(-20deg);
+  animation:buttonSweep 4s linear infinite;
+}
+.command-node::after{
+  content:"";
+  position:absolute;left:0;top:0;width:3px;height:100%;
+  background:#55ff83;
+  box-shadow:0 0 12px #35ff70,0 0 28px rgba(53,255,112,.7);
+}
+.command-node:hover,.command-node:focus-visible{
+  transform:translateY(-3px) scale(1.015)!important;
+  border-color:rgba(116,255,154,.75)!important;
+  box-shadow:inset 0 0 28px rgba(49,255,105,.10),0 0 22px rgba(49,255,105,.20)!important;
+}
+.command-node .node-icon{
+  left:22px!important;
+  width:38px!important;height:38px!important;
+  border:1px solid rgba(93,255,133,.55)!important;
+  border-radius:50%!important;
+  color:#8dffa8!important;
+  text-shadow:0 0 10px #4cff78!important;
+  box-shadow:0 0 13px rgba(62,255,112,.18),inset 0 0 12px rgba(62,255,112,.10)!important;
+}
+.command-node b{
+  color:#e9fff0!important;
+  letter-spacing:.12em!important;
+  text-shadow:0 0 9px rgba(80,255,124,.28)!important;
+}
+.command-node small{
+  color:#86c99a!important;
+  letter-spacing:.16em!important;
+}
+.command-node i{
+  background:#5dff87!important;
+  box-shadow:0 0 10px #4cff78!important;
+}
+.command-node:nth-child(3){grid-column:1 / -1;max-width:calc(50% - 7px);width:100%;justify-self:center}
+
+/* cinematic generic weapon/tech silhouettes — decorative, not UI */
+.command-stage::before{
+  content:"⚔     ◈     ⊕";
+  position:absolute;
+  left:50%;top:-55px;
+  transform:translateX(-50%);
+  color:rgba(104,255,145,.14);
+  font-size:26px;
+  letter-spacing:20px;
+  text-shadow:0 0 18px rgba(72,255,120,.35);
+  pointer-events:none;
+}
+.command-stage::after{
+  content:"";
+  position:absolute;left:50%;bottom:-34px;
+  width:70%;height:1px;transform:translateX(-50%);
+  background:linear-gradient(90deg,transparent,#48ff78,transparent);
+  box-shadow:0 0 16px rgba(55,255,105,.6);
+}
+@keyframes excelsiorPulse{
+  0%,100%{filter:brightness(1)}
+  50%{filter:brightness(1.18)}
+}
+@keyframes scanLine{
+  0%{transform:scaleX(.45);opacity:.35}
+  50%{transform:scaleX(1);opacity:1}
+  100%{transform:scaleX(.45);opacity:.35}
+}
+@keyframes buttonSweep{
+  0%{left:-45%}
+  55%,100%{left:125%}
+}
+@media(max-width:680px){
+  .portal-panel{top:27%!important;width:96vw!important}
+  .portal-command{padding:22px 8px 18px!important}
+  .command-nodes{gap:10px!important}
+  .command-node{height:68px!important;min-height:68px!important;padding-left:62px!important;border-radius:10px!important}
+  .command-node .node-icon{left:16px!important;width:32px!important;height:32px!important}
+  .command-node b{font-size:8px!important}
+  .command-node small{font-size:4.5px!important}
+  .command-node:nth-child(3){max-width:none!important}
+  .command-stage::before{top:-34px;font-size:17px;letter-spacing:10px}
+}
 </style></head>
 <body>
 <div class="jarvis-loader" id="jarvisLoader" aria-hidden="true">
