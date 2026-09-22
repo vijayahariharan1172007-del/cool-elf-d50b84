@@ -79,6 +79,7 @@ async function boot(){
 
  renderEventChoices();
  $('loaderStatus').textContent='SELECT EVENT TO CONTINUE';
+ startSessionWatch();
  try{
   const state=await api('public-registration-state');
   const map=new Map((state.events||[]).map(x=>[x.key,x]));
@@ -89,7 +90,6 @@ async function boot(){
   if(live.length) events=live;
   renderEventChoices();
   $('loaderStatus').textContent='SELECT EVENT TO CONTINUE';
-  startSessionWatch();
  }catch(e){
   // Keep the six known portals usable even if the public-state endpoint is temporarily unavailable.
   $('loaderStatus').textContent='SELECT EVENT TO CONTINUE';
