@@ -96,3 +96,35 @@ body.complete #game{animation:completeBg 1.2s ease forwards}
 .loading-title{font:800 1rem/1 Cinzel,serif;letter-spacing:.32em;color:#eef4ff;text-shadow:0 0 18px rgba(150,190,255,.45);margin-left:.32em}.loading-subtitle{font:600 .4rem/1 Orbitron,sans-serif;letter-spacing:.2em;color:rgba(205,220,255,.55)}
 .loading-progress{width:min(210px,58vw);height:2px;background:rgba(160,190,255,.1);overflow:hidden;margin-top:4px}.loading-progress i{display:block;width:38%;height:100%;background:#b9d5ff;box-shadow:0 0 12px #8ab8ff;animation:loadingProgress 1.15s ease-in-out infinite}
 @keyframes loadingOrbitSpin{to{transform:rotate(360deg)}}@keyframes loadingInnerSpin{to{transform:rotate(360deg)}}@keyframes loadingPulse{0%,100%{transform:scale(.8);opacity:.65}50%{transform:scale(1.18);opacity:1}}@keyframes loadingProgress{0%{transform:translateX(-130%)}100%{transform:translateX(390%)}}@media(max-width:500px){.loading-orbit{width:148px;height:148px}.ls-power{transform:rotate(0deg) translateY(-63px)}.ls-mind{transform:rotate(60deg) translateY(-63px)}.ls-space{transform:rotate(120deg) translateY(-63px)}.ls-time{transform:rotate(180deg) translateY(-63px)}.ls-reality{transform:rotate(240deg) translateY(-63px)}.ls-soul{transform:rotate(300deg) translateY(-63px)}}
+
+
+/* EXCELSIOR visual polish — animation/typography only; gameplay and layout logic unchanged. */
+.hud{font-family:Orbitron,Arial,sans-serif}
+.eyebrow{font-weight:600;text-shadow:0 0 14px rgba(145,175,255,.22)}
+.progress{font-family:Orbitron,Arial,sans-serif;font-weight:600;letter-spacing:2px;box-shadow:0 0 18px rgba(120,155,255,.08),inset 0 0 14px rgba(120,155,255,.04)}
+.instruction h1{font-family:Cinzel,Georgia,serif;font-weight:800;letter-spacing:.11em;font-size:clamp(19px,5.6vw,38px);text-shadow:0 2px 0 rgba(0,0,0,.65),0 0 18px rgba(135,170,255,.32);animation:instructionFloat 4.8s ease-in-out infinite}
+.instruction h1 span{font-family:Orbitron,Arial,sans-serif;font-weight:600;letter-spacing:.16em;color:#eef3ff;text-shadow:0 0 20px rgba(150,185,255,.28)}
+.instruction p{font-family:Orbitron,Arial,sans-serif;font-weight:500;letter-spacing:.22em;text-shadow:0 0 10px rgba(150,180,255,.18)}
+@keyframes instructionFloat{0%,100%{transform:translateY(0);filter:brightness(.96)}50%{transform:translateY(-4px);filter:brightness(1.08)}}
+.stone{will-change:transform,filter}
+.stone img{animation:stoneFloat 4.8s cubic-bezier(.45,.05,.55,.95) infinite;filter:drop-shadow(0 0 12px rgba(var(--c),.62)) drop-shadow(0 0 24px rgba(var(--c),.16))}
+.stone:hover img{filter:drop-shadow(0 0 16px rgba(var(--c),.88)) drop-shadow(0 0 32px rgba(var(--c),.28));transform:scale(1.045)}
+@keyframes stoneFloat{0%,100%{transform:translate3d(0,-4px,0) rotate(-1deg)}50%{transform:translate3d(0,5px,0) rotate(1deg) scale(1.012)}}
+.orbit-track-main{box-shadow:0 0 30px rgba(120,160,255,.08),inset 0 0 30px rgba(120,160,255,.035)}
+.core::before{animation:corePulseEnhanced 2.35s ease-in-out infinite}
+@keyframes corePulseEnhanced{0%,100%{transform:scale(.94);opacity:.58;box-shadow:0 0 24px rgba(130,170,255,.08),inset 0 0 16px rgba(180,205,255,.04)}50%{transform:scale(1.09);opacity:1;box-shadow:0 0 38px rgba(130,170,255,.18),inset 0 0 24px rgba(180,205,255,.08)}}
+.loading-title{font-family:Cinzel,Georgia,serif;font-weight:800;letter-spacing:.34em;animation:loadingTitleIn .9s ease both}
+.loading-subtitle{font-family:Orbitron,Arial,sans-serif;letter-spacing:.24em}
+@keyframes loadingTitleIn{from{opacity:0;transform:translateY(7px);letter-spacing:.46em}to{opacity:1;transform:translateY(0);letter-spacing:.34em}}
+.toast{font-family:Orbitron,Arial,sans-serif;font-weight:600}
+.skip{font-family:Orbitron,Arial,sans-serif;letter-spacing:.18em}
+@media(max-width:500px){
+  .instruction h1{letter-spacing:.07em}
+  .instruction h1 span{letter-spacing:.1em}
+  .instruction p{letter-spacing:.16em}
+  .loading-title{letter-spacing:.24em}
+  .loading-subtitle{letter-spacing:.16em}
+}
+@media(prefers-reduced-motion:reduce){
+  .instruction h1,.loading-title{animation:none!important}
+}
