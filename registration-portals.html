@@ -5,96 +5,34 @@
 <title>Event Registration | EXCELSIOR'26</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Orbitron:wght@500;600;700;800&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="registration.css"><link rel="stylesheet" href="portal-theme.css"><link rel="stylesheet" href="navigation.css"><link rel="stylesheet" href="jarvis-hud.css">
-<link rel="stylesheet" href="action-loader.css"></head>
+<link rel="stylesheet" href="registration.css"><link rel="stylesheet" href="portal-theme.css"><link rel="stylesheet" href="navigation.css"><link rel="stylesheet" href="jarvis-hud.css"><link rel="stylesheet" href="action-loader.css"></head>
 <body class="portal-ref-body">
 <div class="jarvis-loader" id="jarvisLoader" aria-hidden="true"><div class="loader-reactor"><span class="loader-ring loader-ring-a"></span><span class="loader-ring loader-ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S."><span class="loader-scan"></span></div><div class="loader-title">J.A.R.V.I.S.</div><div class="loader-status" id="loaderStatus">LOADING REGISTRATION</div><div class="loader-line"><i></i></div></div>
 <div class="red-atmosphere"></div><canvas id="webCanvas" aria-hidden="true"></canvas><div class="registration-watermark" aria-hidden="true"></div><div class="vignette"></div>
-
 <button class="jarvis-orb registration-jarvis-orb" id="jarvisBtn" type="button" aria-label="Open JARVIS menu"><span class="jarvis-ring ring-a"></span><span class="jarvis-ring ring-b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S." class="jarvis-image"><span class="jarvis-scan"></span><span class="jarvis-label">J.A.R.V.I.S.</span></button>
-
 <main class="registration-page">
 <section id="identityGate" class="identity-gate">
   <div class="portal-heading identity-intro"><p>01</p><h2>EVENT REGISTRATION</h2><span>SELECT YOUR EVENT TO CONTINUE</span></div>
   <div class="registration-warning"><strong>⚠ MASTER ID REQUIRED</strong><span>Your Master ID is your participant identity for every EXCELSIOR'26 event. Select an event below, then enter your Master ID and registered mobile number.</span></div>
-  <div class="identity-grid" id="identityGrid">
-  <article class="identity-card"><div class="choice-index">PORTAL 01</div><h3>SYMPOSIUM 1</h3><p>Register your verified Master ID for Symposium 1.</p><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px"><span style="font:800 9px Orbitron;color:#d21e34">₹100</span><button class="portal-btn event-select" data-key="symposium-1" type="button">SELECT &amp; CONTINUE →</button></div></article>
-  <article class="identity-card"><div class="choice-index">PORTAL 02</div><h3>SYMPOSIUM 2</h3><p>Register your verified Master ID for Symposium 2.</p><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px"><span style="font:800 9px Orbitron;color:#d21e34">₹100</span><button class="portal-btn event-select" data-key="symposium-2" type="button">SELECT &amp; CONTINUE →</button></div></article>
-  <article class="identity-card"><div class="choice-index">PORTAL 03</div><h3>JUNIOR QUIZ</h3><p>Register your verified Master ID for Junior Quiz.</p><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px"><span style="font:800 9px Orbitron;color:#d21e34">₹50</span><button class="portal-btn event-select" data-key="junior-quiz" type="button">SELECT &amp; CONTINUE →</button></div></article>
-  <article class="identity-card"><div class="choice-index">PORTAL 04</div><h3>SENIOR QUIZ</h3><p>Register your verified Master ID for Senior Quiz.</p><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px"><span style="font:800 9px Orbitron;color:#d21e34">₹50</span><button class="portal-btn event-select" data-key="senior-quiz" type="button">SELECT &amp; CONTINUE →</button></div></article>
-  <article class="identity-card"><div class="choice-index">PORTAL 05</div><h3>MEME &amp; SLOGAN</h3><p>Register your verified Master ID for Meme &amp; Slogan.</p><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px"><span style="font:800 9px Orbitron;color:#d21e34">FREE</span><button class="portal-btn event-select" data-key="meme" type="button">SELECT &amp; CONTINUE →</button></div></article>
-  <article class="identity-card"><div class="choice-index">PORTAL 06</div><h3>POSTER</h3><p>Register your verified Master ID for Poster.</p><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px"><span style="font:800 9px Orbitron;color:#d21e34">FREE</span><button class="portal-btn event-select" data-key="poster-slogan" type="button">SELECT &amp; CONTINUE →</button></div></article>
-</div>
+  <div class="identity-grid" id="identityGrid"></div>
 </section>
-
 <section class="portal-shell" id="portalShell" hidden>
   <button class="portal-back" id="backToEvents" type="button">← BACK TO EVENTS</button>
   <div class="portal-heading"><p id="portalSerial">01</p><h2 id="portalTitle">EVENT</h2><span id="portalSubtitle">EVENT REGISTRATION</span></div>
-  <form id="registrationForm" class="reg-card" novalidate>
-    <div class="card-web"></div>
-    <div class="portal-description" id="portalDescription"></div>
+  <form id="registrationForm" class="reg-card" novalidate><div class="card-web"></div><div class="portal-description" id="portalDescription"></div>
     <div class="section-title"><span>01</span> PARTICIPANT VERIFICATION</div>
-    <div class="verify-block">
-      <div class="verify-head"><span>MASTER ID</span><b>PARTICIPANT IDENTITY</b></div>
-      <label>MASTER ID<input id="masterId" name="masterId" type="text" placeholder="EX26-000000" maxlength="11" autocomplete="off" required></label>
-      <label>REGISTERED GMAIL<input id="registeredEmail" name="registeredEmail" type="email" placeholder="yourname@gmail.com" autocomplete="email" required></label>
-      <span class="field-status">Enter the Master ID created during pre-registration.</span>
-    </div>
-    <div class="verify-block">
-      <div class="verify-head"><span>REGISTERED MOBILE NUMBER</span><b>IDENTITY VERIFICATION</b></div>
-      <label>REGISTERED MOBILE NUMBER<input id="mobile" name="mobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit registered mobile" autocomplete="tel" required></label>
-      <span class="field-status">Use the same mobile number linked to this Master ID.</span>
-    </div>
+    <div class="verify-block"><div class="verify-head"><span>MASTER ID</span><b>PARTICIPANT IDENTITY</b></div><label>MASTER ID<input id="masterId" name="masterId" type="text" placeholder="EX26-000000" maxlength="11" autocomplete="off" required></label><label>REGISTERED GMAIL<input id="registeredEmail" name="registeredEmail" type="email" placeholder="yourname@gmail.com" autocomplete="email" required></label><span class="field-status">Enter the Master ID created during pre-registration.</span></div>
+    <div class="verify-block"><div class="verify-head"><span>REGISTERED MOBILE NUMBER</span><b>IDENTITY VERIFICATION</b></div><label>REGISTERED MOBILE NUMBER<input id="mobile" name="mobile" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit registered mobile" autocomplete="tel" required></label><span class="field-status">Use the same mobile number linked to this Master ID.</span></div>
     <div id="verifiedSessionNotice" class="registration-warning" hidden aria-live="polite"></div>
-    <div id="teamFields" class="team-fields" hidden>
-      <div class="section-title"><span>02</span> TEAM MEMBERS</div>
-      <p class="portal-description">Add each additional participant using their own Master ID and registered mobile number.</p>
-      <div id="teamList"></div>
-      <button class="portal-btn" id="addMember" type="button">+ ADD TEAM MEMBER</button>
-    </div>
-    <div id="abstractInfo" class="registration-warning" hidden><strong>SUBMISSION REQUIRED</strong><span>This event requires an abstract/submission. You can open the Abstract Submission portal after event registration.</span></div>
-    <button class="submit-btn" id="submitBtn" type="submit"><span>CONTINUE TO PAYMENT →</span></button>
-    <p id="formStatus" class="form-status" role="status"></p>
+    <div id="teamFields" class="team-fields" hidden><div class="section-title"><span>02</span> TEAM MEMBERS</div><p class="portal-description">Add each additional participant using their own Master ID and registered mobile number.</p><div id="teamList"></div><button class="portal-btn" id="addMember" type="button">+ ADD TEAM MEMBER</button></div>
+    <div id="abstractInfo" class="registration-warning" hidden><strong>SUBMISSION REQUIRED</strong><span>This event requires an abstract/submission. The event card's Abstract Submission choice has been recorded.</span></div>
+    <button class="submit-btn" id="submitBtn" type="submit"><span>CONTINUE TO PAYMENT →</span></button><p id="formStatus" class="form-status" role="status"></p>
   </form>
 </section>
-
-<section class="payment-gate" id="paymentGate" hidden>
-  <button class="portal-back" id="backToDetails" type="button">← BACK TO DETAILS</button>
-  <div class="portal-heading"><p id="gateSerial">02</p><h2 id="gateTitle">PAYMENT</h2><span>STEP 2 • PAYMENT & REGISTRATION</span></div>
-  <div class="gate-card">
-    <div class="gate-meta"><span>EVENT</span><b id="gateType">EVENT REGISTRATION</b></div>
-    <div class="gate-payment"><div class="gate-copy"><small>REGISTRATION FEE</small><strong id="gateAmount">₹0</strong><span id="gateNote"></span></div><div class="gate-qr" id="gateQr"></div></div>
-    <label class="paid-check gate-check" id="paidCheckWrap"><input id="gatePaid" type="checkbox"> I have paid the amount shown above</label>
-    <label id="utrWrap">TRANSACTION / UTR NUMBER<input id="gateUtr" type="text" placeholder="Enter UTR / transaction reference" autocomplete="off"></label>
-    <button class="continue-btn" id="continueToPortal" type="button">CONFIRM EVENT REGISTRATION <b>→</b></button>
-    <p class="gate-status" id="gateStatus" role="status"></p>
-  </div>
-</section>
+<section class="payment-gate" id="paymentGate" hidden><button class="portal-back" id="backToDetails" type="button">← BACK TO DETAILS</button><div class="portal-heading"><p id="gateSerial">02</p><h2 id="gateTitle">PAYMENT</h2><span>STEP 2 • PAYMENT & REGISTRATION</span></div><div class="gate-card"><div class="gate-meta"><span>EVENT</span><b id="gateType">EVENT REGISTRATION</b></div><div class="gate-payment"><div class="gate-copy"><small>REGISTRATION FEE</small><strong id="gateAmount">₹0</strong><span id="gateNote"></span></div><div class="gate-qr" id="gateQr"></div></div><label class="paid-check gate-check" id="paidCheckWrap"><input id="gatePaid" type="checkbox"> I have paid the amount shown above</label><label id="utrWrap">TRANSACTION / UTR NUMBER<input id="gateUtr" type="text" placeholder="Enter UTR / transaction reference" autocomplete="off"></label><button class="continue-btn" id="continueToPortal" type="button">CONFIRM EVENT REGISTRATION <b>→</b></button><p class="gate-status" id="gateStatus" role="status"></p></div></section>
 </main>
-
 <div class="creation-overlay" id="creationOverlay" hidden aria-live="polite" aria-busy="true"><div class="creation-card"><div class="creation-reactor"><span></span><span></span><img src="jarvis.webp" alt="J.A.R.V.I.S."></div><p class="creation-kicker">J.A.R.V.I.S. // SECURE REGISTRATION</p><h2>REGISTERING FOR EVENT</h2><div class="creation-status" id="creationStatus">VERIFYING DETAILS…</div><div class="creation-progress"><i></i></div><small>Please keep this page open. Your event registration is being created.</small></div></div>
-
-<div class="success-overlay" id="successOverlay" hidden>
-  <div class="success-card master-success">
-    <div class="success-symbol">✓</div>
-    <p>EVENT REGISTRATION SUCCESSFUL</p>
-    <span class="success-label">EVENT</span><h3 id="successEvent" class="success-name"></h3>
-    <div id="successTeamMembers" class="success-team-members" hidden><span class="success-label">REGISTERED MASTER IDs</span><div id="successTeamIds"></div></div>
-    <span class="success-label" id="successMasterLabel">MASTER ID</span><h2 id="registrationId">EX26-000000</h2>
-    <p class="master-code-note" id="successMessage">Your Master ID has been successfully registered for this event.</p>
-    <div class="success-actions"><button id="abstractButton" hidden type="button">OPEN ABSTRACT SUBMISSION →</button><button id="downloadEventCard" type="button">DOWNLOAD EVENT REGISTRATION CARD</button><button id="closeSuccess" type="button">BACK TO EVENT PORTAL →</button></div>
-  </div>
-</div>
+<div class="success-overlay" id="successOverlay" hidden><div class="success-card master-success"><div class="success-symbol">✓</div><p>EVENT REGISTRATION SUCCESSFUL</p><span class="success-label">EVENT</span><h3 id="successEvent" class="success-name"></h3><div id="successTeamMembers" class="success-team-members" hidden><span class="success-label">REGISTERED MASTER IDs</span><div id="successTeamIds"></div></div><span class="success-label" id="successMasterLabel">MASTER ID</span><h2 id="registrationId">EX26-000000</h2><p class="master-code-note" id="successMessage">Your Master ID has been successfully registered for this event.</p><div class="success-actions"><button id="abstractButton" hidden type="button">OPEN ABSTRACT SUBMISSION →</button><button id="downloadEventCard" type="button">DOWNLOAD EVENT REGISTRATION CARD</button><button id="closeSuccess" type="button">BACK TO EVENT PORTAL →</button></div></div></div>
 <div class="identity-error-overlay" id="identityErrorOverlay" hidden aria-live="assertive"><div class="identity-error-card"><img class="identity-error-image" src="assets/error-overlay.svg" alt=""><strong>IDENTITY VERIFICATION FAILED</strong><span id="identityErrorText">The Master ID, Gmail or mobile number does not match.</span></div></div>
-
-<div class="jarvis-panel" id="jarvisPanel" aria-hidden="true"><div class="jarvis-hud" role="dialog" aria-label="J.A.R.V.I.S. command interface">
-<header class="jarvis-hud-header"><div class="jarvis-brand"><strong>J A R V I S</strong><span>YOUR EVENT ASSISTANT</span><i class="jarvis-header-line"></i></div><div class="jarvis-header-meta"><b>NAVIGATE</b> • EXPLORE • ACHIEVE</div></header>
-<button class="jarvis-close" id="jarvisClose" type="button">CLOSE INTERFACE</button>
-<section class="jarvis-core-zone"><div class="jarvis-core"><span class="core-ring a"></span><span class="core-ring b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S."><span class="core-scan"></span></div><div class="jarvis-core-label"><strong>J.A.R.V.I.S.</strong><span>COMMAND CORE // ONLINE</span></div></section>
-<nav class="jarvis-links"><button type="button" data-target="HOME"><span class="jarvis-link-icon">⌂</span><span class="jarvis-link-copy">HOME<small>RETURN TO COMMAND DECK</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="REGISTRATIONS"><span class="jarvis-link-icon">▣</span><span class="jarvis-link-copy">REGISTRATION<small>ACCESS EVENT REGISTRATION</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="PROFILE"><span class="jarvis-link-icon">●</span><span class="jarvis-link-copy">PROFILE<small>PARTICIPANT COMMAND PROFILE</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="GENERAL RULES"><span class="jarvis-link-icon">≡</span><span class="jarvis-link-copy">RULES<small>EVENT PROTOCOLS &amp; GUIDELINES</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="CONTACTS"><span class="jarvis-link-icon">◉</span><span class="jarvis-link-copy">CONTACT US<small>CONNECT WITH EXCELSIOR COMMAND</small></span><i class="jarvis-link-arrow"></i></button></nav>
-<div class="jarvis-status"><i></i>CORE ONLINE • SECURE LINK • READY</div>
-</div></div>
-
-<script src="page-loader.js"></script>
-<script src="registration-portals.js?v=28"></script>
-<script src="action-loader.js?v=1"></script></body></html>
+<div class="jarvis-panel" id="jarvisPanel" aria-hidden="true"><div class="jarvis-hud" role="dialog" aria-label="J.A.R.V.I.S. command interface"><header class="jarvis-hud-header"><div class="jarvis-brand"><strong>J A R V I S</strong><span>YOUR EVENT ASSISTANT</span><i class="jarvis-header-line"></i></div><div class="jarvis-header-meta"><b>NAVIGATE</b> • EXPLORE • ACHIEVE</div></header><button class="jarvis-close" id="jarvisClose" type="button">CLOSE INTERFACE</button><section class="jarvis-core-zone"><div class="jarvis-core"><span class="core-ring a"></span><span class="core-ring b"></span><img src="jarvis.webp" alt="J.A.R.V.I.S."><span class="core-scan"></span></div><div class="jarvis-core-label"><strong>J.A.R.V.I.S.</strong><span>COMMAND CORE // ONLINE</span></div></section><nav class="jarvis-links"><button type="button" data-target="HOME"><span class="jarvis-link-icon">⌂</span><span class="jarvis-link-copy">HOME<small>RETURN TO COMMAND DECK</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="REGISTRATIONS"><span class="jarvis-link-icon">▣</span><span class="jarvis-link-copy">REGISTRATION<small>ACCESS EVENT REGISTRATION</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="PROFILE"><span class="jarvis-link-icon">●</span><span class="jarvis-link-copy">PROFILE<small>PARTICIPANT COMMAND PROFILE</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="GENERAL RULES"><span class="jarvis-link-icon">≡</span><span class="jarvis-link-copy">RULES<small>EVENT PROTOCOLS &amp; GUIDELINES</small></span><i class="jarvis-link-arrow"></i></button><button type="button" data-target="CONTACTS"><span class="jarvis-link-icon">◉</span><span class="jarvis-link-copy">CONTACT US<small>CONNECT WITH EXCELSIOR COMMAND</small></span><i class="jarvis-link-arrow"></i></button></nav><div class="jarvis-status"><i></i>CORE ONLINE • SECURE LINK • READY</div></div></div>
+<script src="page-loader.js"></script><script src="registration-portals.js?v=29"></script><script src="abstract-selection.js?v=1"></script><script src="action-loader.js?v=1"></script></body></html>
