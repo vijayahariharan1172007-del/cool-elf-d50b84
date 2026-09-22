@@ -58,12 +58,10 @@ function animateEnergy(){
 }
 setTimeout(()=>requestAnimationFrame(animateEnergy),250);
 
-const enter=document.getElementById('enterButton');
 const jarvis=document.getElementById('jarvisButton');
 const jarvisPanel=document.getElementById('jarvisPanel');
 const jarvisClose=document.getElementById('jarvisClose');
 const panel=document.getElementById('portalPanel');
-const close=document.getElementById('portalClose');
 
 
 function openJarvis(){
@@ -89,14 +87,6 @@ document.querySelectorAll('.jarvis-links button').forEach(btn=>btn.addEventListe
   btn.textContent=target+' // ONLINE';
   setTimeout(()=>{btn.textContent=target},700);
 }));
-
-function openPortal(){
-  panel.classList.add('open');
-  panel.setAttribute('aria-hidden','false');
-}
-enter.addEventListener('click',openPortal);
-close.addEventListener('click',()=>{panel.classList.remove('open');panel.setAttribute('aria-hidden','true')});
-panel.addEventListener('click',e=>{if(e.target===panel) close.click()});
 
 document.querySelectorAll('.command-node').forEach(btn=>btn.addEventListener('click',()=>{
   const target=btn.dataset.target;
