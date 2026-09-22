@@ -82,7 +82,7 @@ document.querySelectorAll('.jarvis-links button').forEach(btn=>btn.addEventListe
   if(target==='REGISTRATIONS'){location.href='registration.html';return;}
   if(target==='PROFILE'){location.href='profile.html';return;}
   if(target==='EVENTS'){location.href='events.html';return;}
-  if(target==='BROCHURE'){location.href='general-rules.html';return;}
+  if(target==='BROCHURE'){openBrochure();return;}
   if(target==='CONTACTS'){location.href='contact.html';return;}
   btn.textContent=target+' // ONLINE';
   setTimeout(()=>{btn.textContent=target},700);
@@ -94,10 +94,16 @@ document.querySelectorAll('.command-node').forEach(btn=>btn.addEventListener('cl
   if(target==='REGISTRATIONS'){location.href='registration.html';return;}
   if(target==='PROFILE'){location.href='profile.html';return;}
   if(target==='EVENTS'){location.href='events.html';return;}
-  if(target==='BROCHURE'){location.href='general-rules.html';return;}
+  if(target==='BROCHURE'){openBrochure();return;}
   if(target==='CONTACTS'){location.href='contact.html';return;}
   btn.textContent=target+' // LOADING';
   setTimeout(()=>{btn.textContent=target},650);
 }));
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(panel.classList.contains('open'))close.click();if(jarvisPanel.classList.contains('open'))closeJarvis();}if(e.key==='Enter'&&!panel.classList.contains('open')&&!jarvisPanel.classList.contains('open'))openPortal()});
+
+
+const EXCELSIOR_BROCHURE_URL='https://rhglnkldrydvrfnrxirg.supabase.co/storage/v1/object/public/excelsior-brochure/brochure.pdf';
+function openBrochure(){
+  window.open(EXCELSIOR_BROCHURE_URL,'_blank','noopener');
+}
