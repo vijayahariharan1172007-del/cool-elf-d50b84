@@ -153,9 +153,11 @@
 .command-stage{position:relative!important}
 .command-nodes{
   display:grid!important;
-  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-template-columns:minmax(0,560px)!important;
+  grid-auto-rows:78px!important;
   gap:14px!important;
-  max-width:820px!important;
+  max-width:560px!important;
+  width:100%!important;
   margin:0 auto!important;
 }
 .command-node{
@@ -210,7 +212,7 @@
   background:#5dff87!important;
   box-shadow:0 0 10px #4cff78!important;
 }
-.command-node:nth-child(3){grid-column:1 / -1;max-width:calc(50% - 7px);width:100%;justify-self:center}
+.command-node:nth-child(3){grid-column:auto;max-width:none;width:100%;justify-self:stretch}
 
 /* cinematic generic weapon/tech silhouettes — decorative, not UI */
 .command-stage::before{
@@ -247,12 +249,12 @@
 @media(max-width:680px){
   .portal-panel{top:27%!important;width:96vw!important}
   .portal-command{padding:22px 8px 18px!important}
-  .command-nodes{gap:10px!important}
+  .command-nodes{grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:68px!important;max-width:94vw!important;gap:10px!important}
   .command-node{height:68px!important;min-height:68px!important;padding-left:62px!important;border-radius:10px!important}
   .command-node .node-icon{left:16px!important;width:32px!important;height:32px!important}
   .command-node b{font-size:8px!important}
   .command-node small{font-size:4.5px!important}
-  .command-node:nth-child(3){max-width:none!important}
+  .command-node:nth-child(3){grid-column:auto!important;max-width:none!important;width:100%!important;justify-self:stretch!important}
   .command-stage::before{top:-34px;font-size:17px;letter-spacing:10px}
 }
 </style></head>
