@@ -12,7 +12,8 @@
 <link rel="stylesheet" href="action-loader.css"><style>
   html,body{min-height:100%;background:#020806}
   .site-bg{
-    position:fixed!important;inset:0!important;
+    display:block!important;visibility:visible!important;opacity:1!important;
+    position:fixed!important;inset:0!important;z-index:0!important;
     background:url("./assets/excelsior-home.webp?v=2") center center/cover no-repeat!important;
     filter:brightness(.72) contrast(1.08) saturate(1.05)!important;
     transform:none!important;animation:none!important;
@@ -27,7 +28,7 @@
   .brand-copy{display:flex!important;flex-direction:column!important;justify-content:center!important}
   .brand-copy strong{font-family:Cinzel,Georgia,serif!important;font-size:clamp(.9rem,2vw,1.2rem)!important;letter-spacing:.16em!important;color:#f3ead0!important;text-shadow:0 1px 4px #000,0 0 10px rgba(83,255,160,.25)!important}
   .brand-copy small{display:none!important}
-  .excelsior-home{position:relative!important;min-height:calc(100svh - 82px);display:block!important;overflow:hidden!important}
+  .excelsior-home{position:relative!important;z-index:5!important;min-height:calc(100svh - 82px);display:block!important;overflow:hidden!important}
   .home-title{
     position:absolute;z-index:12;top:9%;left:50%;transform:translateX(-50%);
     width:min(92vw,900px);text-align:center;pointer-events:none;
