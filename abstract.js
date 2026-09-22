@@ -88,9 +88,15 @@ const downloadCard=(title,rows,filename)=>{const e=v=>String(v??'').replace(/[&<
  $('submitAbstract').onclick=async()=>{
    const file=$('submissionFile').files?.[0];
    if(!file)return $('abstractStatus').textContent='CHOOSE YOUR ABSTRACT FILE FIRST.';
-   const allowed=['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
    const ext=(file.name.split('.').pop()||'').toLowerCase();
-   if(!allowed.includes(file.type)&&!['pdf','doc','docx'].includes(ext))return $('abstractStatus').textContent='ONLY PDF, DOC OR DOCX FILES ARE ALLOWED.';
+   const eventText=(String(currentEventKey||'')+' '+String(current?.eventTitle||'')).toLowerCase();
+   const jpegEvent=eventText.includes('poster')||eventText.includes('meme')||eventText.includes('slogan');
+   if(jpegEvent){
+     if(file.type!=='image/jpeg'||!['jpg','jpeg'].includes(ext))return $('abstractStatus').textContent='POSTER / MEME & SLOGAN ACCEPT JPEG FILES ONLY.';
+   }else{
+     const allowed=['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+     if(!allowed.includes(file.type)||!['pdf','doc','docx'].includes(ext))return $('abstractStatus').textContent='ONLY PDF, DOC OR DOCX FILES ARE ALLOWED.';
+   }
    if(file.size>10*1024*1024)return $('abstractStatus').textContent='FILE MUST BE 10 MB OR SMALLER.';
    $('submitAbstract').disabled=true;$('abstractStatus').textContent='PREPARING SECURE UPLOAD…';
    try{
