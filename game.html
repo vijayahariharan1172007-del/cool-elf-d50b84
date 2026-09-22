@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EXCELSIOR'26 // Awakening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+<div id="game">
+  <div class="nebula nebula-a"></div>
+  <div class="nebula nebula-b"></div>
+  <div class="stars"></div>
+
+  <div class="asset-loader" id="assetLoader">
+    <div class="loading-orbit">
+      <i class="loading-stone ls-power"></i><i class="loading-stone ls-mind"></i>
+      <i class="loading-stone ls-space"></i><i class="loading-stone ls-time"></i>
+      <i class="loading-stone ls-reality"></i><i class="loading-stone ls-soul"></i>
+      <div class="loading-core"><i></i></div>
+    </div>
+    <div class="loading-title">EXCELSIOR'26</div>
+    <div class="loading-subtitle">AWAKENING THE SIX POWERS</div>
+    <div class="loading-progress" id="assetProgress"><i></i></div>
+  </div>
+
+  <div class="hud">
+    <div class="eyebrow">EPISTEME // EXCELSIOR'26</div>
+    <div class="progress" id="progress">0 / 6</div>
+  </div>
+
+  <div class="orbit-track orbit-track-main"></div>
+  <div class="orbit-track orbit-track-inner"></div>
+  <div class="core" id="core">
+    <span class="core-ring ring-outer"></span>
+    <span class="core-ring ring-inner"></span>
+    <span class="core-label">EXCELSIOR CORE</span>
+  </div>
+
+  <div class="instruction" id="instruction">
+    <h1>AWAKEN THE<br><span>SIX POWERS</span></h1>
+    <p>DRAG EACH STONE INTO THE CORE</p>
+  </div>
+
+  <div class="stone-field" id="stoneField">
+    <button class="stone stone-power" data-stone="power" type="button" aria-label="Power stone"><img src="assets/power.png" alt=""></button>
+    <button class="stone stone-mind" data-stone="mind" type="button" aria-label="Mind stone"><img src="assets/mind.png" alt=""></button>
+    <button class="stone stone-space" data-stone="space" type="button" aria-label="Space stone"><img src="assets/space.png" alt=""></button>
+    <button class="stone stone-time" data-stone="time" type="button" aria-label="Time stone"><img src="assets/time.png" alt=""></button>
+    <button class="stone stone-reality" data-stone="reality" type="button" aria-label="Reality stone"><img src="assets/reality.png" alt=""></button>
+    <button class="stone stone-soul" data-stone="soul" type="button" aria-label="Soul stone"><img src="assets/soul.png" alt=""></button>
+  </div>
+
+  <div class="tint" id="tint"></div>
+  <canvas id="fx"></canvas>
+  <div class="toast" id="toast"></div>
+  <button class="skip" id="skip" type="button">SKIP INTRO</button>
+  <div class="flash" id="flash"></div>
+</div>
+<script src="js/game.js"></script>
+</body>
+</html>
