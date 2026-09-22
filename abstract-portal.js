@@ -25,7 +25,12 @@
    $('abstractEditor').dataset.eventKey=currentEventKey;
    $('abstractEventList').hidden=true;$('abstractEditor').hidden=false;
    $('editorEventTitle').textContent=e.eventTitle||currentEventKey.toUpperCase();
-   showMessage(e.submitted?'A submission has already been received for this event.':'SELECT THE FILE YOU WANT TO SUBMIT.');
+   const eventText=(String(e.eventKey||'')+' '+String(e.eventTitle||'')).toLowerCase();
+   let guidance='All file formats are accepted. Organisers will review/select the submitted file.';
+   if(eventText.includes('poster')) guidance='JPEG is preferred for Poster. Other file formats can also be submitted and will be reviewed.';
+   else if(eventText.includes('slogan')||eventText.includes('meme')) guidance='PDF is preferred for Slogan & Meme. Other file formats can also be submitted and will be reviewed.';
+   else if(eventText.includes('symposium')) guidance='PDF is preferred for Symposium. Other file formats can also be submitted and will be reviewed.';
+   showMessage(e.submitted?'A submission has already been received for this event.':guidance);
    $('submissionFile').value='';$('submissionFileName').textContent='NO FILE SELECTED';
    const disabled=!!e.submitted;
    $('submissionFile').disabled=disabled;$('submitAbstract').disabled=disabled;
@@ -54,9 +59,8 @@
  $('submitAbstract').onclick=async()=>{
    const file=$('submissionFile').files?.[0];
    if(!file)return showMessage('CHOOSE YOUR ABSTRACT FILE FIRST.');
-   const allowed=['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-   const ext=(file.name.split('.').pop()||'').toLowerCase();
-   if(!allowed.includes(file.type)&&!['pdf','doc','docx'].includes(ext))return showMessage('ONLY PDF, DOC OR DOCX FILES ARE ALLOWED.');
+   // All file formats are accepted. Event-specific guidance is shown to the participant;
+   // organisers can review/select the submitted file. Keep the 10 MB safety limit.
    if(file.size>10*1024*1024)return showMessage('FILE MUST BE 10 MB OR SMALLER.');
    $('submitAbstract').disabled=true;showMessage('PREPARING SECURE UPLOAD…');
    try{
