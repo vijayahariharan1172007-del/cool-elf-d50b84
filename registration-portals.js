@@ -198,7 +198,6 @@ $('registrationForm').addEventListener('submit',async e=>{
 });
 
 
-function downloadCard(title,rows,filename){const escHtml=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const html='<!doctype html><html><head><meta charset="utf-8"><title>'+escHtml(title)+'</title><style>body{font-family:Arial,sans-serif;background:#eef3ff;padding:30px;color:#14224d}.card{max-width:620px;margin:auto;background:#fff;border:2px solid #173fbe;border-radius:20px;padding:28px;box-shadow:0 15px 45px #ccd5ef}.brand{font-size:12px;letter-spacing:3px;color:#d11d31;font-weight:800}.title{font-size:30px;color:#173fbe;margin:8px 0 22px;font-weight:900}.row{padding:12px 0;border-top:1px solid #e1e6f3}.label{font-size:10px;color:#68748f;font-weight:800;text-transform:uppercase}.value{font-size:15px;font-weight:800;margin-top:5px}</style></head><body><div class="card"><div class="brand">EPISTEME // EXCELSIOR\'26</div><div class="title">'+escHtml(title)+'</div>'+rows.map(r=>'<div class="row"><div class="label">'+escHtml(r[0])+'</div><div class="value">'+escHtml(r[1])+'</div></div>').join('')+'</div></body></html>';const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 function openPayment(){
  const fee=Number(current.fee||0);
  $('gateSerial').textContent='02';
@@ -255,13 +254,6 @@ $('continueToPortal').addEventListener('click',async()=>{
  setTimeout(()=>{$('creationOverlay').hidden=true;document.body.classList.remove('creation-active');btn.disabled=false},450);
 });
 
-$('downloadEventCard').addEventListener('click',()=>downloadCard('EVENT REGISTRATION CARD',[
- ['Participant',auth?.master?.name||''],
- ['Master ID',auth?.master?.masterId||''],
- ['Registered Gmail',auth?.master?.email||$('registeredEmail').value],
- ['Event',current?.displayTitle||current?.title||''],
- ['Status','REGISTERED']
-],(current?.key||'event')+'-registration-card.html'));
 $('abstractButton').addEventListener('click',()=>location.href='abstract.html');
 $('closeSuccess').addEventListener('click',()=>{$('successOverlay').hidden=true;showSection('identityGate')});
 
